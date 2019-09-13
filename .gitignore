@@ -3,3 +3,4 @@
 
 # Files
 npm-debug.log*
+.env
