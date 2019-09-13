@@ -6,9 +6,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 // Middlewares
-const root = require('./middleware/root');
-const notFound = require('./middleware/notFound');
-const internalServerError = require('./middleware/internalServerError');
+const { root, notFound, errorHandler } = require('./middlewares');
 
 const app = express();
 
@@ -25,6 +23,6 @@ if (NODE_ENV === 'development') {
 
 app.get('/', root);
 app.use(notFound);
-app.use(internalServerError);
+app.use(errorHandler);
 
 module.exports = app;
