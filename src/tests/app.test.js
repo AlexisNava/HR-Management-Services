@@ -18,12 +18,7 @@ describe('App', () => {
   });
 
   it('GET /a should respond Not Found status', async () => {
-    const { statusCode, body, hostname, originalUrl } = await request(app).get(
-      '/a',
-    );
-
-    console.log('hostname', hostname);
-    console.log('originalUrl', originalUrl);
+    const { statusCode, body } = await request(app).get('/a');
 
     expect(statusCode).toBe(404);
     expect(body).toEqual({
