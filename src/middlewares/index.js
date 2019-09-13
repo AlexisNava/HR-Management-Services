@@ -1,3 +1,5 @@
+const { writeNewError } = require('../utils');
+
 function root(req, res) {
   // Send Log
   res.log.info(`Status: 200, Date: ${new Date()}`);
@@ -14,6 +16,13 @@ function root(req, res) {
 function notFound(req, res) {
   const { hostname, originalUrl } = req;
 
+  // Write error
+  writeNewError(
+    `The resource http://${hostname}${originalUrl} was not found`,
+    404,
+    `http://${hostname}${originalUrl}`,
+  );
+
   // Send Log
   res.log.info(`Status: 404, Date: ${new Date()}`);
 
@@ -28,9 +37,18 @@ function notFound(req, res) {
 
 // eslint-disable-next-line no-unused-vars
 function errorHandler(error, req, res, next) {
+  const { hostname, originalUrl } = req;
+
   const statusCode = error.statusCode || 500;
   const status = error.status || 'Internal Server Error';
   const message = error.message || error;
+
+  // Write error
+  writeNewError(
+    `The resource http://${hostname}${originalUrl} was not found`,
+    404,
+    `http://${hostname}${originalUrl}`,
+  );
 
   // Send Log
   res.log.info(`Status: 500, Date: ${new Date()}`);
