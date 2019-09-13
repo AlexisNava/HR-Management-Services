@@ -4,6 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
+    "start:production": "NODE_ENV=production node server.js",
+    "lint": "eslint '**/*.js' --fix",
     "test": "jest"
   },
   "repository": {
