@@ -1,0 +1,19 @@
+{
+  "name": "hr-management-services",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexisNava/HR-Management-Services.git"
+  },
+  "author": "Alexis Nava",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexisNava/HR-Management-Services/issues"
+  },
+  "homepage": "https://github.com/AlexisNava/HR-Management-Services#readme"
+}
