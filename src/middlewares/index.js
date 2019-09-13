@@ -1,4 +1,7 @@
 function root(req, res) {
+  // Send Log
+  res.log.info(`Status: 200, Date: ${new Date()}`);
+
   res.status(200).json({
     statusCode: 200,
     status: 'OK',
@@ -10,6 +13,9 @@ function root(req, res) {
 
 function notFound(req, res) {
   const { hostname, originalUrl } = req;
+
+  // Send Log
+  res.log.info(`Status: 404, Date: ${new Date()}`);
 
   res.status(404).json({
     statusCode: 404,
@@ -25,6 +31,9 @@ function errorHandler(error, req, res, next) {
   const statusCode = error.statusCode || 500;
   const status = error.status || 'Internal Server Error';
   const message = error.message || error;
+
+  // Send Log
+  res.log.info(`Status: 500, Date: ${new Date()}`);
 
   res.status(statusCode).json({
     statusCode,
