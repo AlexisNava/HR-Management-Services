@@ -1,4 +1,4 @@
-const { writeFileSync, appendFileSync } = require('fs');
+const { appendFile } = require('fs');
 const shortid = require('shortid');
 
 /**
@@ -27,16 +27,12 @@ const getValueByEnv = (devValue, prodValue) => {
 function writeNewError(message, status, requestedURL, filename = 'errors.txt') {
   const errorMessage = `${shortid.generate()} ${status} ${requestedURL}: ${message} | ${new Date()}\n\n`;
 
-  try {
-    // Create a new file
-    appendFileSync(filename, '');
-
-    // Write the error in the file
-    writeFileSync(filename, errorMessage);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error.message);
-  }
+  appendFile(filename, errorMessage, error => {
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.error(error.message);
+    }
+  });
 }
 
 module.exports = { getValueByEnv, writeNewError };
