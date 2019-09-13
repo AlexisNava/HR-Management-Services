@@ -1,0 +1,14 @@
+# Folders
+node_modules/
+.vscode/
+.circleci/
+.git/
+
+# Files
+.env
+.eslintrc.json
+.prettierrc.json
+.eslintignore
+.nvmrc
+.gitignore
+LICENSE
