@@ -102,3 +102,10 @@ workflows:
           filters:
             branches:
               only: master
+      - publish_docker_image:
+          requires:
+            - run_tests
+            - run_linter
+          filters:
+            branches:
+              only: master
