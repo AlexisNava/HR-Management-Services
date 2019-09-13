@@ -2,6 +2,8 @@
 
 HR-Management-Services are the REST Services for the HR Management Project.
 
+[![CircleCI](https://circleci.com/gh/AlexisNava/HR-Management-Services/tree/master.svg?style=svg)](https://circleci.com/gh/AlexisNava/HR-Management-Services/tree/master)
+
 ## Requirements
 
 - [Node LTS](https://nodejs.org/en/download/) >= *v*10.16.3
