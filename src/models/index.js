@@ -2,9 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 
+// Utils
+const { getValueByEnv } = require('../utils');
+
+// Constants
+const {
+  DB_DEVELOPMENT_CONFIG,
+  DB_PRODUCTION_CONFIG,
+} = require('../config/contants');
+
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const config = getValueByEnv(DB_DEVELOPMENT_CONFIG, DB_PRODUCTION_CONFIG);
 const db = {};
 
 let sequelize;
@@ -26,7 +34,7 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach(file => {
-    const model = sequelize['import'](path.join(__dirname, file));
+    const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
   });
 
