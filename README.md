@@ -9,6 +9,27 @@ HR-Management-Services are the REST Services for the HR Management Project.
 - [Node LTS](https://nodejs.org/en/download/) >= *v*10.16.3
 - [yarn](https://yarnpkg.com/lang/en/) >= *v*1.17.3
 - [nvm](https://github.com/nvm-sh/nvm) >= *v*0.34.0
+- Create a `.env` file.
+
+## .env Example File
+
+**Important**:
+
+- `DB_USERNAME` must have the same value that `POSTGRES_USER` in the `docker-compose` file. By defaul is equal to **hr-services**.
+
+- `DB_DEVELOPMENT_PASSWORD` must have the same value that `POSTGRES_PASSWORD` in the `docker-compose` file. By defaul is equal to **development_hr_services_2019**.
+
+```.env
+
+DB_USERNAME = 'hr-services'
+DB_DEVELOPMENT_PASSWORD = 'development_hr_services_2019'
+DB_TEST_PASSWORD = ''
+DB_PRODUCTION_PASSWORD = ''
+DB_DEVELOPMENT_NAME = ''
+DB_TEST_NAME = ''
+DB_PRODUCTION_NAME = ''
+
+```
 
 ## Installation
 
