@@ -7,6 +7,7 @@ require('dotenv').config();
 
 // Middlewares
 const root = require('./middleware/root');
+const notFound = require('./middleware/notFound');
 
 const app = express();
 
@@ -22,5 +23,6 @@ if (NODE_ENV === 'development') {
 }
 
 app.use('/', root);
+app.use(notFound);
 
 module.exports = app;
