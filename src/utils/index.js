@@ -1,3 +1,6 @@
+const { appendFile } = require('fs');
+const shortid = require('shortid');
+
 /**
  * Get the corresponding value per environment
  * IMPORTANT: Will return devValue for development and test environments.
@@ -14,4 +17,22 @@ const getValueByEnv = (devValue, prodValue) => {
   return devValue;
 };
 
-module.exports = { getValueByEnv };
+/**
+ * Write a error description in the errors.txt file
+ * @param {String} message - Error.message
+ * @param {Number} status - Status Code
+ * @param {String} requestedURL - http://${req.hostname}${req.originalUrl}
+ * @param {String} filename - File Name, by default is errors.txt
+ */
+function writeNewError(message, status, requestedURL, filename = 'errors.txt') {
+  const errorMessage = `${shortid.generate()} ${status} ${requestedURL}: ${message} | ${new Date()}\n\n`;
+
+  appendFile(filename, errorMessage, error => {
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.error(error.message);
+    }
+  });
+}
+
+module.exports = { getValueByEnv, writeNewError };
