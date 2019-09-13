@@ -22,7 +22,7 @@ if (NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use('/', root);
+app.get('/', root);
 app.use(notFound);
 
 module.exports = app;

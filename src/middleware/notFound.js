@@ -5,7 +5,7 @@ function notFound(req, res) {
     status: 404,
     statusCode: 'Not Found',
     data: null,
-    message: `Not Found the resource: http://${host}/${originalUrl}`,
+    message: `Not Found the resource: http://${host}${originalUrl}`,
   });
 }
 
