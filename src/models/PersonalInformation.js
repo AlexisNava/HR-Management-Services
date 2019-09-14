@@ -26,4 +26,6 @@ module.exports = Sequelize.define('PersonalInformation', {
     type: Sequelize.type.NUMBER(20),
     allowNull: false,
   },
+  createdAt: Sequelize.DATE,
+  updatedAt: Sequelize.DATE,
 });
