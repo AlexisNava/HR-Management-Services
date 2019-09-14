@@ -11,6 +11,9 @@ const { hrManagementServicesDB } = require('./config/dbConnection');
 // Middlewares
 const { root, notFound, errorHandler } = require('./middlewares');
 
+// Services
+const AuthServices = require('./services/auth');
+
 const app = express();
 
 // Use Middlewares
@@ -32,6 +35,7 @@ hrManagementServicesDB
   });
 
 app.get('/', root);
+app.use('/api/auth', AuthServices);
 app.use(notFound);
 app.use(errorHandler);
 
