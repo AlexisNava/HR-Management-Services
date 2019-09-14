@@ -19,3 +19,5 @@ const hrManagementServicesDB = new Sequelize(dbURI);
 module.exports = {
   hrManagementServicesDB,
 };
+
+global.sequelize = hrManagementServicesDB;
