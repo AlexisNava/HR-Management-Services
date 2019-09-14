@@ -3,13 +3,13 @@ const path = require('path');
 const Sequelize = require('sequelize');
 
 // Utils
-const { getValueByEnv } = require('../utils');
+const { getValueByEnv } = require('../../utils');
 
 // Constants
 const {
   DB_DEVELOPMENT_CONFIG,
   DB_PRODUCTION_CONFIG,
-} = require('../config/contants');
+} = require('../../config/contants');
 
 const basename = path.basename(__filename);
 const config = getValueByEnv(DB_DEVELOPMENT_CONFIG, DB_PRODUCTION_CONFIG);
