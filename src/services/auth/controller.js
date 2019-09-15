@@ -1,5 +1,5 @@
 // Prisma Client
-const { hash } = require('bcrypt');
+const { hash, compare } = require('bcrypt');
 const { prisma } = require('../../db/generated/prisma-client');
 
 /**
@@ -40,9 +40,27 @@ async function registerAdministrator(newAdministrator) {
 async function login(user) {
   const { email, password } = user;
 
-  // Find user by email and password
+  // Find user by email
+  const foundUser = await prisma.user({ email });
 
-  return null;
+  if (!foundUser) {
+    const error = new Error('Not Found User');
+    error.statusCode = 404;
+    error.status = 'Not Found';
+    throw error;
+  } else {
+    // Validate password
+    const validatedPassword = await compare(password, foundUser.password);
+
+    if (!validatedPassword) {
+      const error = new Error('The password is incorrect');
+      error.statusCode = 409;
+      error.status = 'Conflict';
+      throw error;
+    }
+  }
+
+  return foundUser;
 }
 
 module.exports = {
