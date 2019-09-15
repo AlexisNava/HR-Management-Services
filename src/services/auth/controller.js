@@ -1,4 +1,5 @@
 // Prisma Client
+const { hash } = require('bcrypt');
 const { prisma } = require('../../db/generated/prisma-client');
 
 /**
@@ -16,29 +17,28 @@ async function registerAdministrator(newAdministrator) {
   } = newAdministrator.personalInformation;
 
   // Encrypt Password
+  const encryptedPassword = await hash(password, 10);
 
-  try {
-    // Register new Admin
-    const response = await prisma.createAdministrator({
-      user: {
-        password,
+  // Register new Admin
+  const response = await prisma.createAdministrator({
+    user: {
+      create: {
+        password: encryptedPassword,
         isAdmin: true,
         personalInformation: {
-          email,
-          names,
-          lastName,
-          mothersName: mothersName || null,
-          phoneNumber: phoneNumber || null,
+          create: {
+            email,
+            names,
+            lastName,
+            mothersName: mothersName || null,
+            phoneNumber: phoneNumber || null,
+          },
         },
       },
-    });
+    },
+  });
 
-    console.log('response', response);
-
-    return response;
-  } catch (error) {
-    return error;
-  }
+  return response;
 }
 
 module.exports = {

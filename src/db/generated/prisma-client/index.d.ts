@@ -485,7 +485,7 @@ export interface PersonalInformationCreateInput {
   email: String;
   names: String;
   lastName: String;
-  mothersName: String;
+  mothersName?: Maybe<String>;
   phoneNumber?: Maybe<Int>;
 }
 
@@ -646,7 +646,7 @@ export interface PersonalInformation {
   email: String;
   names: String;
   lastName: String;
-  mothersName: String;
+  mothersName?: String;
   phoneNumber?: Int;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -915,7 +915,7 @@ export interface PersonalInformationPreviousValues {
   email: String;
   names: String;
   lastName: String;
-  mothersName: String;
+  mothersName?: String;
   phoneNumber?: Int;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;

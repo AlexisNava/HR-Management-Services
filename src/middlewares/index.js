@@ -34,11 +34,14 @@ function notFound(req, res) {
 
 // eslint-disable-next-line no-unused-vars
 function errorHandler(error, req, res, next) {
+  console.log('errorHandler', error);
+
   const { hostname, originalUrl } = req;
 
   const statusCode = error.statusCode || 500;
   const status = error.status || 'Internal Server Error';
   const message = error.message || error;
+  const data = error.data || null;
 
   // Write error
   writeNewError(
@@ -53,7 +56,7 @@ function errorHandler(error, req, res, next) {
   res.status(statusCode).json({
     statusCode,
     status,
-    data: null,
+    data,
     message,
     error: true,
   });
