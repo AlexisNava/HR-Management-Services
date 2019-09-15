@@ -1,10 +1,8 @@
 endpoint: http://localhost:4466
-datamodel: datamodel.prisma
+datamodel:
+  - ./src/models/personalInformation.prisma
+  - ./src/models/user.prisma
 
 generate:
   - generator: javascript-client
     output: ./src/db/generated/prisma-client/
-
-hooks:
-  post-deploy:
-    - prisma generate

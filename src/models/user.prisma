@@ -5,12 +5,3 @@ type User {
   isActive: Boolean! @default(value: true)
   personalInformation: PersonalInformation @relation(link: INLINE)
 }
-
-type PersonalInformation {
-  id: ID! @id
-  email: String! @unique
-  names: String!
-  lastName: String!
-  mothersName: String!
-  phoneNumber: Int!
-}
