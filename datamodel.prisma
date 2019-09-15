@@ -12,5 +12,5 @@ type PersonalInformation {
   names: String!
   lastName: String!
   mothersName: String!
-  phoneNumber: Number!
+  phoneNumber: Int!
 }
