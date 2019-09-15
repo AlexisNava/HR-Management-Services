@@ -51,6 +51,7 @@ router.post(
         statusCode: 200,
         status: 'OK',
         data: response,
+        error: false,
       });
     } catch (e) {
       next(e);
@@ -64,6 +65,7 @@ router.post('/register', (req, res) => {
     statusCode: 200,
     status: 'OK',
     data: null,
+    error: false,
   });
 });
 
