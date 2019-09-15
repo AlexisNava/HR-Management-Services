@@ -34,8 +34,6 @@ function notFound(req, res) {
 
 // eslint-disable-next-line no-unused-vars
 function errorHandler(error, req, res, next) {
-  console.log('errorHandler', error);
-
   const { hostname, originalUrl } = req;
 
   const statusCode = error.statusCode || 500;
