@@ -41,6 +41,11 @@ async function registerAdministrator(newAdministrator) {
   return response;
 }
 
+async function login(user) {
+  const { email, password } = user;
+}
+
 module.exports = {
   registerAdministrator,
+  login,
 };
