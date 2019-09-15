@@ -3,7 +3,7 @@ type PersonalInformation {
   email: String! @unique
   names: String!
   lastName: String!
-  mothersName: String!
+  mothersName: String
   phoneNumber: Int
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
