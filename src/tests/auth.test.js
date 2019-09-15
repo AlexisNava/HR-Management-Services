@@ -50,8 +50,36 @@ describe('Auth', () => {
     expect(statusCode).toBe(200);
     expect(body).toHaveProperty('statusCode', 200);
     expect(body).toHaveProperty('status', 'OK');
-    expect(body).toHaveProperty('statusCode', 200);
     expect(body).toHaveProperty('data');
     expect(body).toHaveProperty('error', false);
+  });
+
+  it('POST /api/auth/register-admin should responds Conflic', async () => {
+    await request(app)
+      .post('/api/auth/register-admin')
+      .send({
+        email: 'elon.musk@gmail.com',
+        password: `elon12345`,
+        name: 'Elon',
+        lastName: 'Musk',
+      })
+      .set('Accept', 'application/json');
+
+    const { statusCode, body } = await request(app)
+      .post('/api/auth/register-admin')
+      .send({
+        email: 'elon.musk@gmail.com',
+        password: `elon12345`,
+        name: 'Elon',
+        lastName: 'Musk',
+      })
+      .set('Accept', 'application/json');
+
+    expect(statusCode).toBe(409);
+    expect(body).toHaveProperty('statusCode', 409);
+    expect(body).toHaveProperty('status', 'Conflict');
+    expect(body).toHaveProperty('data', null);
+    expect(body).toHaveProperty('error', true);
+    expect(body).toHaveProperty('errorMessage');
   });
 });
