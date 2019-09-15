@@ -1,5 +1,9 @@
-// Prisma Client
+require('dotenv').config();
+
 const { hash, compare } = require('bcrypt');
+const { sign } = require('jsonwebtoken');
+
+// Prisma Client
 const { prisma } = require('../../db/generated/prisma-client');
 
 /**
@@ -60,7 +64,16 @@ async function login(user) {
     }
   }
 
-  return foundUser;
+  const token = sign(
+    {
+      id: foundUser.id,
+      email: foundUser.email,
+    },
+    process.env.JWT_KEY,
+    { expiresIn: '1h' },
+  );
+
+  return { token };
 }
 
 module.exports = {
