@@ -1,8 +1,11 @@
 const { Router } = require('express');
 
+// Prisma Client
+const { prisma } = require('../../db/generated/prisma-client');
+
 const router = Router();
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   res.status(200).json({
     statusCode: 200,
     status: 'OK',
@@ -17,5 +20,7 @@ router.post('/register', (req, res) => {
     data: null,
   });
 });
+
+router.post('/register-admin', async (req, res) => {});
 
 module.exports = router;
