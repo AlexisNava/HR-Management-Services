@@ -6,6 +6,8 @@ module.exports = {
 /* GraphQL */ `type Administrator {
   id: ID!
   user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type AdministratorConnection {
@@ -27,10 +29,16 @@ type AdministratorEdge {
 enum AdministratorOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type AdministratorPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type AdministratorSubscriptionPayload {
@@ -71,6 +79,22 @@ input AdministratorWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   user: UserWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [AdministratorWhereInput!]
   OR: [AdministratorWhereInput!]
   NOT: [AdministratorWhereInput!]

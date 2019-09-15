@@ -1,9 +1,6 @@
 const { writeNewError } = require('../utils');
 
 function root(req, res) {
-  // Send Log
-  res.log.info(`Status: 200, Date: ${new Date()}`);
-
   res.status(200).json({
     statusCode: 200,
     status: 'OK',

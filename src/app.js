@@ -13,6 +13,8 @@ const AuthServices = require('./services/auth');
 
 const app = express();
 
+app.disable('x-powered-by');
+
 // Use Middlewares
 app.use(pino());
 app.use(cors());
