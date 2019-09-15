@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('App', () => {
-  it('GET / should respond OK status', async () => {
+  it('GET / should responds OK status', async () => {
     const { statusCode, body } = await request(app).get('/');
 
     expect(statusCode).toBe(200);

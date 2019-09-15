@@ -1,5 +1,5 @@
 type Administrator {
-  id: ID! @id
+  id: ID! @id @unique
   user: User!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
