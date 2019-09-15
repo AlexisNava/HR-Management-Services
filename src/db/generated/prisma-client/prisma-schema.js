@@ -18,7 +18,16 @@ type AdministratorConnection {
 
 input AdministratorCreateInput {
   id: ID
-  user: UserCreateOneInput!
+  user: UserCreateOneWithoutAdministratorInput!
+}
+
+input AdministratorCreateOneWithoutUserInput {
+  create: AdministratorCreateWithoutUserInput
+  connect: AdministratorWhereUniqueInput
+}
+
+input AdministratorCreateWithoutUserInput {
+  id: ID
 }
 
 type AdministratorEdge {
@@ -60,7 +69,14 @@ input AdministratorSubscriptionWhereInput {
 }
 
 input AdministratorUpdateInput {
-  user: UserUpdateOneRequiredInput
+  user: UserUpdateOneRequiredWithoutAdministratorInput
+}
+
+input AdministratorUpdateOneWithoutUserInput {
+  create: AdministratorCreateWithoutUserInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: AdministratorWhereUniqueInput
 }
 
 input AdministratorWhereInput {
@@ -169,6 +185,7 @@ type Subscription {
 type User {
   id: ID!
   email: String!
+  administrator: Administrator
   password: String!
   name: String!
   lastName: String!
@@ -189,6 +206,7 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   email: String!
+  administrator: AdministratorCreateOneWithoutUserInput
   password: String!
   name: String!
   lastName: String!
@@ -198,9 +216,21 @@ input UserCreateInput {
   isActive: Boolean
 }
 
-input UserCreateOneInput {
-  create: UserCreateInput
+input UserCreateOneWithoutAdministratorInput {
+  create: UserCreateWithoutAdministratorInput
   connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutAdministratorInput {
+  id: ID
+  email: String!
+  password: String!
+  name: String!
+  lastName: String!
+  mothersName: String
+  phoneNumber: String
+  isAdmin: Boolean
+  isActive: Boolean
 }
 
 type UserEdge {
@@ -265,19 +295,9 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
-input UserUpdateDataInput {
-  email: String
-  password: String
-  name: String
-  lastName: String
-  mothersName: String
-  phoneNumber: String
-  isAdmin: Boolean
-  isActive: Boolean
-}
-
 input UserUpdateInput {
   email: String
+  administrator: AdministratorUpdateOneWithoutUserInput
   password: String
   name: String
   lastName: String
@@ -298,16 +318,27 @@ input UserUpdateManyMutationInput {
   isActive: Boolean
 }
 
-input UserUpdateOneRequiredInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
+input UserUpdateOneRequiredWithoutAdministratorInput {
+  create: UserCreateWithoutAdministratorInput
+  update: UserUpdateWithoutAdministratorDataInput
+  upsert: UserUpsertWithoutAdministratorInput
   connect: UserWhereUniqueInput
 }
 
-input UserUpsertNestedInput {
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
+input UserUpdateWithoutAdministratorDataInput {
+  email: String
+  password: String
+  name: String
+  lastName: String
+  mothersName: String
+  phoneNumber: String
+  isAdmin: Boolean
+  isActive: Boolean
+}
+
+input UserUpsertWithoutAdministratorInput {
+  update: UserUpdateWithoutAdministratorDataInput!
+  create: UserCreateWithoutAdministratorInput!
 }
 
 input UserWhereInput {
@@ -339,6 +370,7 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  administrator: AdministratorWhereInput
   password: String
   password_not: String
   password_in: [String!]

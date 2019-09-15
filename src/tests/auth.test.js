@@ -27,16 +27,19 @@ describe('Auth', () => {
 
   it('POST /api/auth/register-admin should responds OK', async () => {
     // Delete User
-    const foundUser = await prisma.user({ email: 'elon.musk@gmail.com' });
-    const foundAdministrator = await prisma.administrator({
-      user: foundUser.id,
-    });
+    const foundUser = await prisma
+      .user({ email: 'elon.musk@gmail.com' })
+      .administrator();
 
-    console.log('foundAdministrator', foundAdministrator);
+    console.log('foundUser', foundUser);
 
-    if (foundUser && foundAdministrator) {
-      await prisma.deleteAdministrator({ id: foundAdministrator.id });
-      await prisma.deleteUser({ id: foundUser.id });
+    // const foundAdministrator = await prisma.administrator();
+
+    // console.log('foundAdministrator', foundAdministrator);
+
+    if (foundUser) {
+      // await prisma.deleteAdministrator({ id: foundAdministrator.id });
+      // await prisma.deleteUser({ id: foundUser.id });
     }
 
     const { statusCode, body } = await request(app)
