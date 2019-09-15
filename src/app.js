@@ -16,7 +16,6 @@ const app = express();
 // Use Middlewares
 app.use(pino());
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', root);
