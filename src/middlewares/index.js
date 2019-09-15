@@ -38,7 +38,7 @@ function errorHandler(error, req, res, next) {
 
   const statusCode = error.statusCode || 500;
   const status = error.status || 'Internal Server Error';
-  const message = error.message || error;
+  const errorMessage = error.message || error;
   const data = error.data || null;
 
   // Write error
@@ -55,7 +55,7 @@ function errorHandler(error, req, res, next) {
     statusCode,
     status,
     data,
-    message,
+    errorMessage,
     error: true,
   });
 }
