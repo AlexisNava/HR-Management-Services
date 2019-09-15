@@ -142,7 +142,7 @@ type PersonalInformation {
   email: String!
   names: String!
   lastName: String!
-  mothersName: String
+  mothersName: String!
   phoneNumber: Int
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -159,7 +159,7 @@ input PersonalInformationCreateInput {
   email: String!
   names: String!
   lastName: String!
-  mothersName: String
+  mothersName: String!
   phoneNumber: Int
 }
 
@@ -197,7 +197,7 @@ type PersonalInformationPreviousValues {
   email: String!
   names: String!
   lastName: String!
-  mothersName: String
+  mothersName: String!
   phoneNumber: Int
   createdAt: DateTime!
   updatedAt: DateTime!
