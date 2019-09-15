@@ -4,7 +4,7 @@ const admin = joi
   .object({
     email: joi.string().required(),
     password: joi.string().required(),
-    names: joi.string().required(),
+    name: joi.string().required(),
     lastName: joi.string().required(),
     mothersName: joi.string(),
     phoneNumber: joi.number(),

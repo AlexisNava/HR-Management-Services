@@ -365,6 +365,7 @@ export interface AdministratorSubscriptionWhereInput {
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  email?: Maybe<String>;
 }>;
 
 export interface UserUpdateManyMutationInput {

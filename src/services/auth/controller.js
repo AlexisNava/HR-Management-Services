@@ -7,7 +7,14 @@ const { prisma } = require('../../db/generated/prisma-client');
  * @param {Object} newAdministrator - Administrator Model
  */
 async function registerAdministrator(newAdministrator) {
-  const { password, email, phoneNumber } = newAdministrator;
+  const {
+    email,
+    password,
+    name,
+    lastName,
+    mothersName,
+    phoneNumber,
+  } = newAdministrator;
 
   // Encrypt Password
   const encryptedPassword = await hash(password, 10);
@@ -18,6 +25,9 @@ async function registerAdministrator(newAdministrator) {
       create: {
         email,
         password: encryptedPassword,
+        name,
+        lastName,
+        mothersName: mothersName || null,
         phoneNumber: phoneNumber || null,
         isAdmin: true,
       },
