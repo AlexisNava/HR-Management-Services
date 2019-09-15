@@ -3,7 +3,88 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregatePersonalInformation {
+/* GraphQL */ `type Administrator {
+  id: ID!
+  user: User!
+}
+
+type AdministratorConnection {
+  pageInfo: PageInfo!
+  edges: [AdministratorEdge]!
+  aggregate: AggregateAdministrator!
+}
+
+input AdministratorCreateInput {
+  id: ID
+  user: UserCreateOneInput!
+}
+
+type AdministratorEdge {
+  node: Administrator!
+  cursor: String!
+}
+
+enum AdministratorOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type AdministratorPreviousValues {
+  id: ID!
+}
+
+type AdministratorSubscriptionPayload {
+  mutation: MutationType!
+  node: Administrator
+  updatedFields: [String!]
+  previousValues: AdministratorPreviousValues
+}
+
+input AdministratorSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AdministratorWhereInput
+  AND: [AdministratorSubscriptionWhereInput!]
+  OR: [AdministratorSubscriptionWhereInput!]
+  NOT: [AdministratorSubscriptionWhereInput!]
+}
+
+input AdministratorUpdateInput {
+  user: UserUpdateOneRequiredInput
+}
+
+input AdministratorWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  AND: [AdministratorWhereInput!]
+  OR: [AdministratorWhereInput!]
+  NOT: [AdministratorWhereInput!]
+}
+
+input AdministratorWhereUniqueInput {
+  id: ID
+}
+
+type AggregateAdministrator {
+  count: Int!
+}
+
+type AggregatePersonalInformation {
   count: Int!
 }
 
@@ -20,6 +101,11 @@ scalar DateTime
 scalar Long
 
 type Mutation {
+  createAdministrator(data: AdministratorCreateInput!): Administrator!
+  updateAdministrator(data: AdministratorUpdateInput!, where: AdministratorWhereUniqueInput!): Administrator
+  upsertAdministrator(where: AdministratorWhereUniqueInput!, create: AdministratorCreateInput!, update: AdministratorUpdateInput!): Administrator!
+  deleteAdministrator(where: AdministratorWhereUniqueInput!): Administrator
+  deleteManyAdministrators(where: AdministratorWhereInput): BatchPayload!
   createPersonalInformation(data: PersonalInformationCreateInput!): PersonalInformation!
   updatePersonalInformation(data: PersonalInformationUpdateInput!, where: PersonalInformationWhereUniqueInput!): PersonalInformation
   updateManyPersonalInformations(data: PersonalInformationUpdateManyMutationInput!, where: PersonalInformationWhereInput): BatchPayload!
@@ -277,6 +363,9 @@ input PersonalInformationWhereUniqueInput {
 }
 
 type Query {
+  administrator(where: AdministratorWhereUniqueInput!): Administrator
+  administrators(where: AdministratorWhereInput, orderBy: AdministratorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Administrator]!
+  administratorsConnection(where: AdministratorWhereInput, orderBy: AdministratorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AdministratorConnection!
   personalInformation(where: PersonalInformationWhereUniqueInput!): PersonalInformation
   personalInformations(where: PersonalInformationWhereInput, orderBy: PersonalInformationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PersonalInformation]!
   personalInformationsConnection(where: PersonalInformationWhereInput, orderBy: PersonalInformationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PersonalInformationConnection!
@@ -287,6 +376,7 @@ type Query {
 }
 
 type Subscription {
+  administrator(where: AdministratorSubscriptionWhereInput): AdministratorSubscriptionPayload
   personalInformation(where: PersonalInformationSubscriptionWhereInput): PersonalInformationSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -313,6 +403,11 @@ input UserCreateInput {
   isAdmin: Boolean
   isActive: Boolean
   personalInformation: PersonalInformationCreateOneInput!
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 type UserEdge {
@@ -362,6 +457,13 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  password: String
+  isAdmin: Boolean
+  isActive: Boolean
+  personalInformation: PersonalInformationUpdateOneRequiredInput
+}
+
 input UserUpdateInput {
   password: String
   isAdmin: Boolean
@@ -373,6 +475,18 @@ input UserUpdateManyMutationInput {
   password: String
   isAdmin: Boolean
   isActive: Boolean
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
