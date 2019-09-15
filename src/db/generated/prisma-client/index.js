@@ -5,11 +5,11 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "User",
+    name: "PersonalInformation",
     embedded: false
   },
   {
-    name: "PersonalInformation",
+    name: "User",
     embedded: false
   }
 ];

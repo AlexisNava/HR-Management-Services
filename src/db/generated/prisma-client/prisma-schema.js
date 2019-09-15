@@ -15,6 +15,8 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 scalar Long
 
 type Mutation {
@@ -54,8 +56,10 @@ type PersonalInformation {
   email: String!
   names: String!
   lastName: String!
-  mothersName: String!
-  phoneNumber: Int!
+  mothersName: String
+  phoneNumber: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type PersonalInformationConnection {
@@ -69,8 +73,8 @@ input PersonalInformationCreateInput {
   email: String!
   names: String!
   lastName: String!
-  mothersName: String!
-  phoneNumber: Int!
+  mothersName: String
+  phoneNumber: Int
 }
 
 input PersonalInformationCreateOneInput {
@@ -96,6 +100,10 @@ enum PersonalInformationOrderByInput {
   mothersName_DESC
   phoneNumber_ASC
   phoneNumber_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type PersonalInformationPreviousValues {
@@ -103,8 +111,10 @@ type PersonalInformationPreviousValues {
   email: String!
   names: String!
   lastName: String!
-  mothersName: String!
-  phoneNumber: Int!
+  mothersName: String
+  phoneNumber: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type PersonalInformationSubscriptionPayload {
@@ -149,12 +159,10 @@ input PersonalInformationUpdateManyMutationInput {
   phoneNumber: Int
 }
 
-input PersonalInformationUpdateOneInput {
+input PersonalInformationUpdateOneRequiredInput {
   create: PersonalInformationCreateInput
   update: PersonalInformationUpdateDataInput
   upsert: PersonalInformationUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
   connect: PersonalInformationWhereUniqueInput
 }
 
@@ -242,6 +250,22 @@ input PersonalInformationWhereInput {
   phoneNumber_lte: Int
   phoneNumber_gt: Int
   phoneNumber_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [PersonalInformationWhereInput!]
   OR: [PersonalInformationWhereInput!]
   NOT: [PersonalInformationWhereInput!]
@@ -272,7 +296,9 @@ type User {
   password: String!
   isAdmin: Boolean!
   isActive: Boolean!
-  personalInformation: PersonalInformation
+  personalInformation: PersonalInformation!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserConnection {
@@ -286,7 +312,7 @@ input UserCreateInput {
   password: String!
   isAdmin: Boolean
   isActive: Boolean
-  personalInformation: PersonalInformationCreateOneInput
+  personalInformation: PersonalInformationCreateOneInput!
 }
 
 type UserEdge {
@@ -303,6 +329,10 @@ enum UserOrderByInput {
   isAdmin_DESC
   isActive_ASC
   isActive_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
@@ -310,6 +340,8 @@ type UserPreviousValues {
   password: String!
   isAdmin: Boolean!
   isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -334,7 +366,7 @@ input UserUpdateInput {
   password: String
   isAdmin: Boolean
   isActive: Boolean
-  personalInformation: PersonalInformationUpdateOneInput
+  personalInformation: PersonalInformationUpdateOneRequiredInput
 }
 
 input UserUpdateManyMutationInput {
@@ -377,6 +409,22 @@ input UserWhereInput {
   isActive: Boolean
   isActive_not: Boolean
   personalInformation: PersonalInformationWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

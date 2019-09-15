@@ -3,5 +3,7 @@ type User {
   password: String!
   isAdmin: Boolean! @default(value: false)
   isActive: Boolean! @default(value: true)
-  personalInformation: PersonalInformation @relation(link: INLINE)
+  personalInformation: PersonalInformation!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

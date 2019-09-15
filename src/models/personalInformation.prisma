@@ -3,6 +3,8 @@ type PersonalInformation {
   email: String! @unique
   names: String!
   lastName: String!
-  mothersName: String!
-  phoneNumber: Int!
+  mothersName: String
+  phoneNumber: Int
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
