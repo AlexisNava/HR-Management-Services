@@ -153,8 +153,18 @@ export type AdministratorOrderByInput =
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "email_ASC"
+  | "email_DESC"
   | "password_ASC"
   | "password_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "lastName_ASC"
+  | "lastName_DESC"
+  | "mothersName_ASC"
+  | "mothersName_DESC"
+  | "phoneNumber_ASC"
+  | "phoneNumber_DESC"
   | "isAdmin_ASC"
   | "isAdmin_DESC"
   | "isActive_ASC"
@@ -180,14 +190,24 @@ export interface AdministratorUpdateInput {
 }
 
 export interface UserUpdateInput {
+  email?: Maybe<String>;
   password?: Maybe<String>;
+  name?: Maybe<String>;
+  lastName?: Maybe<String>;
+  mothersName?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
   isAdmin?: Maybe<Boolean>;
   isActive?: Maybe<Boolean>;
 }
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
+  email: String;
   password: String;
+  name: String;
+  lastName: String;
+  mothersName?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
   isAdmin?: Maybe<Boolean>;
   isActive?: Maybe<Boolean>;
 }
@@ -207,6 +227,20 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
   password?: Maybe<String>;
   password_not?: Maybe<String>;
   password_in?: Maybe<String[] | String>;
@@ -221,6 +255,62 @@ export interface UserWhereInput {
   password_not_starts_with?: Maybe<String>;
   password_ends_with?: Maybe<String>;
   password_not_ends_with?: Maybe<String>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  lastName?: Maybe<String>;
+  lastName_not?: Maybe<String>;
+  lastName_in?: Maybe<String[] | String>;
+  lastName_not_in?: Maybe<String[] | String>;
+  lastName_lt?: Maybe<String>;
+  lastName_lte?: Maybe<String>;
+  lastName_gt?: Maybe<String>;
+  lastName_gte?: Maybe<String>;
+  lastName_contains?: Maybe<String>;
+  lastName_not_contains?: Maybe<String>;
+  lastName_starts_with?: Maybe<String>;
+  lastName_not_starts_with?: Maybe<String>;
+  lastName_ends_with?: Maybe<String>;
+  lastName_not_ends_with?: Maybe<String>;
+  mothersName?: Maybe<String>;
+  mothersName_not?: Maybe<String>;
+  mothersName_in?: Maybe<String[] | String>;
+  mothersName_not_in?: Maybe<String[] | String>;
+  mothersName_lt?: Maybe<String>;
+  mothersName_lte?: Maybe<String>;
+  mothersName_gt?: Maybe<String>;
+  mothersName_gte?: Maybe<String>;
+  mothersName_contains?: Maybe<String>;
+  mothersName_not_contains?: Maybe<String>;
+  mothersName_starts_with?: Maybe<String>;
+  mothersName_not_starts_with?: Maybe<String>;
+  mothersName_ends_with?: Maybe<String>;
+  mothersName_not_ends_with?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  phoneNumber_not?: Maybe<String>;
+  phoneNumber_in?: Maybe<String[] | String>;
+  phoneNumber_not_in?: Maybe<String[] | String>;
+  phoneNumber_lt?: Maybe<String>;
+  phoneNumber_lte?: Maybe<String>;
+  phoneNumber_gt?: Maybe<String>;
+  phoneNumber_gte?: Maybe<String>;
+  phoneNumber_contains?: Maybe<String>;
+  phoneNumber_not_contains?: Maybe<String>;
+  phoneNumber_starts_with?: Maybe<String>;
+  phoneNumber_not_starts_with?: Maybe<String>;
+  phoneNumber_ends_with?: Maybe<String>;
+  phoneNumber_not_ends_with?: Maybe<String>;
   isAdmin?: Maybe<Boolean>;
   isAdmin_not?: Maybe<Boolean>;
   isActive?: Maybe<Boolean>;
@@ -278,7 +368,12 @@ export type UserWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface UserUpdateManyMutationInput {
+  email?: Maybe<String>;
   password?: Maybe<String>;
+  name?: Maybe<String>;
+  lastName?: Maybe<String>;
+  mothersName?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
   isAdmin?: Maybe<Boolean>;
   isActive?: Maybe<Boolean>;
 }
@@ -328,7 +423,12 @@ export interface UserUpdateOneRequiredInput {
 }
 
 export interface UserUpdateDataInput {
+  email?: Maybe<String>;
   password?: Maybe<String>;
+  name?: Maybe<String>;
+  lastName?: Maybe<String>;
+  mothersName?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
   isAdmin?: Maybe<Boolean>;
   isActive?: Maybe<Boolean>;
 }
@@ -391,7 +491,12 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface User {
   id: ID_Output;
+  email: String;
   password: String;
+  name: String;
+  lastName: String;
+  mothersName?: String;
+  phoneNumber?: String;
   isAdmin: Boolean;
   isActive: Boolean;
   createdAt: DateTimeOutput;
@@ -400,7 +505,12 @@ export interface User {
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
   password: () => Promise<String>;
+  name: () => Promise<String>;
+  lastName: () => Promise<String>;
+  mothersName: () => Promise<String>;
+  phoneNumber: () => Promise<String>;
   isAdmin: () => Promise<Boolean>;
   isActive: () => Promise<Boolean>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -411,7 +521,12 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  mothersName: () => Promise<AsyncIterator<String>>;
+  phoneNumber: () => Promise<AsyncIterator<String>>;
   isAdmin: () => Promise<AsyncIterator<Boolean>>;
   isActive: () => Promise<AsyncIterator<Boolean>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -422,7 +537,12 @@ export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
   password: () => Promise<String>;
+  name: () => Promise<String>;
+  lastName: () => Promise<String>;
+  mothersName: () => Promise<String>;
+  phoneNumber: () => Promise<String>;
   isAdmin: () => Promise<Boolean>;
   isActive: () => Promise<Boolean>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -447,7 +567,12 @@ export interface BatchPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
+  email: String;
   password: String;
+  name: String;
+  lastName: String;
+  mothersName?: String;
+  phoneNumber?: String;
   isAdmin: Boolean;
   isActive: Boolean;
   createdAt: DateTimeOutput;
@@ -458,7 +583,12 @@ export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  email: () => Promise<String>;
   password: () => Promise<String>;
+  name: () => Promise<String>;
+  lastName: () => Promise<String>;
+  mothersName: () => Promise<String>;
+  phoneNumber: () => Promise<String>;
   isAdmin: () => Promise<Boolean>;
   isActive: () => Promise<Boolean>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -469,7 +599,12 @@ export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  mothersName: () => Promise<AsyncIterator<String>>;
+  phoneNumber: () => Promise<AsyncIterator<String>>;
   isAdmin: () => Promise<AsyncIterator<Boolean>>;
   isActive: () => Promise<AsyncIterator<Boolean>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;

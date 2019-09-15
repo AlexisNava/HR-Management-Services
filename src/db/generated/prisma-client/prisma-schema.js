@@ -168,7 +168,12 @@ type Subscription {
 
 type User {
   id: ID!
+  email: String!
   password: String!
+  name: String!
+  lastName: String!
+  mothersName: String
+  phoneNumber: String
   isAdmin: Boolean!
   isActive: Boolean!
   createdAt: DateTime!
@@ -183,7 +188,12 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
+  email: String!
   password: String!
+  name: String!
+  lastName: String!
+  mothersName: String
+  phoneNumber: String
   isAdmin: Boolean
   isActive: Boolean
 }
@@ -201,8 +211,18 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  email_ASC
+  email_DESC
   password_ASC
   password_DESC
+  name_ASC
+  name_DESC
+  lastName_ASC
+  lastName_DESC
+  mothersName_ASC
+  mothersName_DESC
+  phoneNumber_ASC
+  phoneNumber_DESC
   isAdmin_ASC
   isAdmin_DESC
   isActive_ASC
@@ -215,7 +235,12 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
+  email: String!
   password: String!
+  name: String!
+  lastName: String!
+  mothersName: String
+  phoneNumber: String
   isAdmin: Boolean!
   isActive: Boolean!
   createdAt: DateTime!
@@ -241,19 +266,34 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateDataInput {
+  email: String
   password: String
+  name: String
+  lastName: String
+  mothersName: String
+  phoneNumber: String
   isAdmin: Boolean
   isActive: Boolean
 }
 
 input UserUpdateInput {
+  email: String
   password: String
+  name: String
+  lastName: String
+  mothersName: String
+  phoneNumber: String
   isAdmin: Boolean
   isActive: Boolean
 }
 
 input UserUpdateManyMutationInput {
+  email: String
   password: String
+  name: String
+  lastName: String
+  mothersName: String
+  phoneNumber: String
   isAdmin: Boolean
   isActive: Boolean
 }
@@ -285,6 +325,20 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -299,6 +353,62 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  mothersName: String
+  mothersName_not: String
+  mothersName_in: [String!]
+  mothersName_not_in: [String!]
+  mothersName_lt: String
+  mothersName_lte: String
+  mothersName_gt: String
+  mothersName_gte: String
+  mothersName_contains: String
+  mothersName_not_contains: String
+  mothersName_starts_with: String
+  mothersName_not_starts_with: String
+  mothersName_ends_with: String
+  mothersName_not_ends_with: String
+  phoneNumber: String
+  phoneNumber_not: String
+  phoneNumber_in: [String!]
+  phoneNumber_not_in: [String!]
+  phoneNumber_lt: String
+  phoneNumber_lte: String
+  phoneNumber_gt: String
+  phoneNumber_gte: String
+  phoneNumber_contains: String
+  phoneNumber_not_contains: String
+  phoneNumber_starts_with: String
+  phoneNumber_not_starts_with: String
+  phoneNumber_ends_with: String
+  phoneNumber_not_ends_with: String
   isAdmin: Boolean
   isAdmin_not: Boolean
   isActive: Boolean

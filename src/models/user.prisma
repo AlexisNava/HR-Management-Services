@@ -1,6 +1,11 @@
 type User {
   id: ID! @id
+  email: String!
   password: String!
+  name: String!
+  lastName: String!
+  mothersName: String
+  phoneNumber: String
   isAdmin: Boolean! @default(value: false)
   isActive: Boolean! @default(value: true)
   createdAt: DateTime! @createdAt
