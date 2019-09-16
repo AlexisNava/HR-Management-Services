@@ -1,6 +1,7 @@
 type Administrator {
   id: ID! @id @unique
   user: User!
+  team: Team @relation(link: INLINE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

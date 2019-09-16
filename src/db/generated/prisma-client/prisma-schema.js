@@ -6,6 +6,7 @@ module.exports = {
 /* GraphQL */ `type Administrator {
   id: ID!
   user: User!
+  team: Team
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -19,10 +20,11 @@ type AdministratorConnection {
 input AdministratorCreateInput {
   id: ID
   user: UserCreateOneWithoutAdministratorInput!
+  team: TeamCreateOneWithoutAdminInput
 }
 
-input AdministratorCreateOneInput {
-  create: AdministratorCreateInput
+input AdministratorCreateOneWithoutTeamInput {
+  create: AdministratorCreateWithoutTeamInput
   connect: AdministratorWhereUniqueInput
 }
 
@@ -31,8 +33,14 @@ input AdministratorCreateOneWithoutUserInput {
   connect: AdministratorWhereUniqueInput
 }
 
+input AdministratorCreateWithoutTeamInput {
+  id: ID
+  user: UserCreateOneWithoutAdministratorInput!
+}
+
 input AdministratorCreateWithoutUserInput {
   id: ID
+  team: TeamCreateOneWithoutAdminInput
 }
 
 type AdministratorEdge {
@@ -73,31 +81,43 @@ input AdministratorSubscriptionWhereInput {
   NOT: [AdministratorSubscriptionWhereInput!]
 }
 
-input AdministratorUpdateDataInput {
-  user: UserUpdateOneRequiredWithoutAdministratorInput
-}
-
 input AdministratorUpdateInput {
   user: UserUpdateOneRequiredWithoutAdministratorInput
+  team: TeamUpdateOneWithoutAdminInput
 }
 
-input AdministratorUpdateOneRequiredInput {
-  create: AdministratorCreateInput
-  update: AdministratorUpdateDataInput
-  upsert: AdministratorUpsertNestedInput
+input AdministratorUpdateOneRequiredWithoutTeamInput {
+  create: AdministratorCreateWithoutTeamInput
+  update: AdministratorUpdateWithoutTeamDataInput
+  upsert: AdministratorUpsertWithoutTeamInput
   connect: AdministratorWhereUniqueInput
 }
 
 input AdministratorUpdateOneWithoutUserInput {
   create: AdministratorCreateWithoutUserInput
+  update: AdministratorUpdateWithoutUserDataInput
+  upsert: AdministratorUpsertWithoutUserInput
   delete: Boolean
   disconnect: Boolean
   connect: AdministratorWhereUniqueInput
 }
 
-input AdministratorUpsertNestedInput {
-  update: AdministratorUpdateDataInput!
-  create: AdministratorCreateInput!
+input AdministratorUpdateWithoutTeamDataInput {
+  user: UserUpdateOneRequiredWithoutAdministratorInput
+}
+
+input AdministratorUpdateWithoutUserDataInput {
+  team: TeamUpdateOneWithoutAdminInput
+}
+
+input AdministratorUpsertWithoutTeamInput {
+  update: AdministratorUpdateWithoutTeamDataInput!
+  create: AdministratorCreateWithoutTeamInput!
+}
+
+input AdministratorUpsertWithoutUserInput {
+  update: AdministratorUpdateWithoutUserDataInput!
+  create: AdministratorCreateWithoutUserInput!
 }
 
 input AdministratorWhereInput {
@@ -116,6 +136,7 @@ input AdministratorWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   user: UserWhereInput
+  team: TeamWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -513,7 +534,7 @@ type TeamConnection {
 
 input TeamCreateInput {
   id: ID
-  admin: AdministratorCreateOneInput!
+  admin: AdministratorCreateOneWithoutTeamInput!
   name: String!
   isActive: Boolean
 }
@@ -521,6 +542,17 @@ input TeamCreateInput {
 input TeamCreateOneInput {
   create: TeamCreateInput
   connect: TeamWhereUniqueInput
+}
+
+input TeamCreateOneWithoutAdminInput {
+  create: TeamCreateWithoutAdminInput
+  connect: TeamWhereUniqueInput
+}
+
+input TeamCreateWithoutAdminInput {
+  id: ID
+  name: String!
+  isActive: Boolean
 }
 
 type TeamEdge {
@@ -568,13 +600,13 @@ input TeamSubscriptionWhereInput {
 }
 
 input TeamUpdateDataInput {
-  admin: AdministratorUpdateOneRequiredInput
+  admin: AdministratorUpdateOneRequiredWithoutTeamInput
   name: String
   isActive: Boolean
 }
 
 input TeamUpdateInput {
-  admin: AdministratorUpdateOneRequiredInput
+  admin: AdministratorUpdateOneRequiredWithoutTeamInput
   name: String
   isActive: Boolean
 }
@@ -591,9 +623,28 @@ input TeamUpdateOneRequiredInput {
   connect: TeamWhereUniqueInput
 }
 
+input TeamUpdateOneWithoutAdminInput {
+  create: TeamCreateWithoutAdminInput
+  update: TeamUpdateWithoutAdminDataInput
+  upsert: TeamUpsertWithoutAdminInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: TeamWhereUniqueInput
+}
+
+input TeamUpdateWithoutAdminDataInput {
+  name: String
+  isActive: Boolean
+}
+
 input TeamUpsertNestedInput {
   update: TeamUpdateDataInput!
   create: TeamCreateInput!
+}
+
+input TeamUpsertWithoutAdminInput {
+  update: TeamUpdateWithoutAdminDataInput!
+  create: TeamCreateWithoutAdminInput!
 }
 
 input TeamWhereInput {
