@@ -1,6 +1,6 @@
 type Administrator {
   id: ID! @id @unique
-  user: String!
+  user: String! @unique
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

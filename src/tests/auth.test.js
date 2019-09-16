@@ -28,9 +28,9 @@ describe('Auth', () => {
   it('POST /api/auth/register-admin should responds OK', async () => {
     // Delete User
     const foundUser = await prisma.user({ email: 'elon.musk@gmail.com' });
-    const foundAdministrator = await prisma
-      .user({ email: 'elon.musk@gmail.com' })
-      .administrator();
+    const foundAdministrator = await prisma.administrator({
+      user: foundUser.id,
+    });
 
     if (foundUser && foundAdministrator) {
       await prisma.deleteAdministrator({ id: foundAdministrator.id });

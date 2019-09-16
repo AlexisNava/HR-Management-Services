@@ -122,6 +122,7 @@ input AdministratorWhereInput {
 
 input AdministratorWhereUniqueInput {
   id: ID
+  user: String
 }
 
 type AggregateAdministrator {
@@ -311,6 +312,7 @@ input EmployeeWhereInput {
 
 input EmployeeWhereUniqueInput {
   id: ID
+  user: String
 }
 
 scalar Long
