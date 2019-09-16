@@ -35,6 +35,11 @@ jobs:
       - run:
           name: "Docker Compose ps"
           command: docker-compose ps
+      - run:
+          name: "Prisma Logs"
+          command: |
+            docker container ls
+            docker logs project_prisma_1
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
