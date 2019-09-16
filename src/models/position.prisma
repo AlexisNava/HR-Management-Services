@@ -1,0 +1,6 @@
+type Position {
+  id: ID! @id @unique
+  name: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
