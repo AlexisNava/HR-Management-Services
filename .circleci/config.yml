@@ -32,12 +32,12 @@ jobs:
       - run:
           name: "Docker Compose Up"
           command: docker-compose up -d
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: "Docker Compose ps"
           command: docker-compose ps
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
       - run:
           name: "Prisma Deploy"
           command: npx prisma deploy
