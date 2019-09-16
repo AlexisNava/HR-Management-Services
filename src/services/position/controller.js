@@ -7,4 +7,10 @@ async function getAllPositions() {
   return positions;
 }
 
-module.exports = { getAllPositions };
+async function addPosition(position) {
+  const response = await prisma.createPosition(position);
+
+  return response;
+}
+
+module.exports = { getAllPositions, addPosition };
