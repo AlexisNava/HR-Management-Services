@@ -3,7 +3,11 @@
 const { Router } = require('express');
 
 // Middlewares
-const { validateToken, errorHandler } = require('../../middlewares');
+const {
+  validateToken,
+  errorHandler,
+  validateIfIsAdmin,
+} = require('../../middlewares');
 
 // Controller
 const { getEmployeesByTeamID } = require('./controller');
@@ -13,6 +17,7 @@ const router = Router();
 router.get(
   '/:teamId',
   validateToken,
+  validateIfIsAdmin,
   async (req, res, next) => {
     const { teamId } = req.params;
 

@@ -3,7 +3,11 @@
 const { Router } = require('express');
 
 // Middlewares
-const { validateToken, errorHandler } = require('../../middlewares');
+const {
+  validateToken,
+  errorHandler,
+  validateIfIsAdmin,
+} = require('../../middlewares');
 
 // Controller
 const { getAllPositions, addPosition } = require('./controller');
@@ -19,6 +23,7 @@ const router = Router();
 router.get(
   '/',
   validateToken,
+  validateIfIsAdmin,
   async (req, res, next) => {
     const positions = await getAllPositions();
 
@@ -39,6 +44,7 @@ router.get(
 router.post(
   '/',
   validateToken,
+  validateIfIsAdmin,
   async (req, res, next) => {
     const { body, hostname, originalUrl } = req;
 

@@ -1,5 +1,10 @@
+/* eslint-disable consistent-return */
+
 require('dotenv').config();
 const { verify } = require('jsonwebtoken');
+
+// Prisma Client
+const { prisma } = require('../db/generated/prisma-client');
 
 // Utils
 const { writeNewError } = require('../utils');
@@ -64,7 +69,6 @@ function errorHandler(error, req, res, next) {
   });
 }
 
-// eslint-disable-next-line consistent-return
 async function validateToken(req, res, next) {
   const { hostname, originalUrl, headers } = req;
   const { authorization } = headers;
@@ -94,7 +98,7 @@ async function validateToken(req, res, next) {
     const validatedToken = await verify(token, process.env.JWT_KEY);
     res.validatedToken = validatedToken;
 
-    next();
+    return next();
   } catch (error) {
     return res.status(500).json({
       statusCode: 500,
@@ -105,4 +109,41 @@ async function validateToken(req, res, next) {
   }
 }
 
-module.exports = { root, notFound, errorHandler, validateToken };
+async function validateIfIsAdmin(req, res, next) {
+  const { validatedToken } = res;
+
+  if (validatedToken) {
+    const { id } = validatedToken;
+
+    // Find user
+    const user = await prisma.user({ id });
+
+    if (user.isAdmin !== true) {
+      return res.status(401).json({
+        statusCode: 401,
+        status: 'Unauthorized',
+        data: null,
+        error: true,
+        errorMessage: 'Only administrators can access to this resource',
+      });
+    }
+
+    return next();
+  }
+
+  return res.status(401).json({
+    statusCode: 401,
+    status: 'Unauthorized',
+    data: null,
+    error: true,
+    errorMessage: 'Only administrators can access to this resource',
+  });
+}
+
+module.exports = {
+  root,
+  notFound,
+  errorHandler,
+  validateToken,
+  validateIfIsAdmin,
+};

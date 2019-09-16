@@ -6,7 +6,11 @@ const { Router } = require('express');
 const { getAllTeams, addTeam } = require('./controller');
 
 // Middlewares
-const { validateToken, errorHandler } = require('../../middlewares');
+const {
+  validateToken,
+  errorHandler,
+  validateIfIsAdmin,
+} = require('../../middlewares');
 
 // Schema
 const { team } = require('./schema');
@@ -19,6 +23,7 @@ const router = Router();
 router.get(
   '/',
   validateToken,
+  validateIfIsAdmin,
   async (req, res, next) => {
     try {
       const { validatedToken } = res;
@@ -41,6 +46,7 @@ router.get(
 router.post(
   '/',
   validateToken,
+  validateIfIsAdmin,
   async (req, res, next) => {
     const { body, hostname, originalUrl } = req;
 

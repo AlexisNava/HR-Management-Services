@@ -3,7 +3,11 @@
 const { Router } = require('express');
 
 // Middlewares
-const { errorHandler, validateToken } = require('../../middlewares');
+const {
+  errorHandler,
+  validateToken,
+  validateIfIsAdmin,
+} = require('../../middlewares');
 
 // Schemas
 const { admin, user, employee } = require('./schema');
@@ -63,6 +67,7 @@ router.post(
 router.post(
   '/register',
   validateToken,
+  validateIfIsAdmin,
   async (req, res, next) => {
     const { body, hostname, originalUrl } = req;
 
