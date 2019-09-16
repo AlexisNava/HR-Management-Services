@@ -77,6 +77,8 @@ router.post(
         error: false,
       });
     } catch (e) {
+      e.statusCode = 409;
+      e.status = 'Conflict';
       next(e);
     }
   },

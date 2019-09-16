@@ -12,12 +12,23 @@ async function getAllTeams(validatedToken) {
 async function addTeam(team) {
   const { name, admin } = team;
 
-  const response = await prisma.createTeam({
-    name,
-    admin,
-  });
+  // Validate admin
+  const foundAdministrator = await prisma.administrator({ id: admin });
 
-  return response;
+  if (foundAdministrator) {
+    const response = await prisma.createTeam({
+      name,
+      admin,
+    });
+
+    return response;
+  }
+
+  const error = new Error(`Not Found an administrator with the id: ${admin}`);
+  error.statusCode = 400;
+  error.status = 'Bad Requets';
+
+  throw error;
 }
 
 module.exports = {
