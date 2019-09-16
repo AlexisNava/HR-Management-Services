@@ -22,6 +22,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Set Up Enviroment Variables"
+          command: |
+            echo 'export JWT_KEY=$JWT_KEY' >> $BASH_ENV
+      - run:
           name: "Run tests"
           command: |
             set +e             
