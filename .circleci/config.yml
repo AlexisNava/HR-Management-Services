@@ -38,7 +38,6 @@ jobs:
       - run:
           name: "Prisma Logs"
           command: |
-            docker container ls
             docker logs project_prisma_1
       - restore_cache:
           keys:
