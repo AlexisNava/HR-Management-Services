@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.get('/', root);
 app.use('/api/auth', AuthServices);
 app.use('/api/position', PositionServices);
-app.use('/api/position', TeamServices);
+app.use('/api/team', TeamServices);
 app.use(notFound);
 app.use(errorHandler);
 
