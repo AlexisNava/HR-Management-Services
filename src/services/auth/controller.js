@@ -73,7 +73,17 @@ async function login(user) {
     { expiresIn: '1h' },
   );
 
-  return { token };
+  return {
+    token,
+    userInformation: {
+      id: foundUser.id,
+      email: foundUser.email,
+      name: foundUser.name,
+      lastName: foundUser.lastName,
+      mothersName: foundUser.mothersName,
+      isAdmin: foundUser.isAdmin,
+    },
+  };
 }
 
 module.exports = {
