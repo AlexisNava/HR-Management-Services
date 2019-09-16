@@ -2,6 +2,9 @@ endpoint: http://localhost:4466
 datamodel:
   - ./src/models/user.prisma
   - ./src/models/administrator.prisma
+  - ./src/models/team.prisma
+  - ./src/models/position.prisma
+  - ./src/models/employee.prisma
 
 generate:
   - generator: javascript-client
