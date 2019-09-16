@@ -3,17 +3,30 @@ const { prisma } = require('../../db/generated/prisma-client');
 
 async function getEmployeesByTeamID(teamID) {
   // Verify team
-  const foundTeam = prisma.team({ id: teamID });
+  const foundTeam = await prisma.team({ id: teamID });
 
   if (foundTeam) {
-    const employees = prisma.employees({ team: teamID });
+    const employees = await prisma.employees({ where: { team: teamID } });
+    const getUsersInfo = await employees.map(async employee => {
+      const user = await prisma.user({ id: employee.user });
 
-    return employees;
+      return {
+        employeeID: employee.id,
+        team: employee.team,
+        position: employee.position,
+        userID: employee.user,
+        email: user.email,
+        name: user.name,
+        lastName: user.lastName,
+        mothersName: user.mothersName,
+      };
+    });
+    const users = await Promise.all(getUsersInfo);
+
+    return users;
   }
 
   const error = new Error(`Not Found team with the id: ${teamID}`);
-  error.statusCode = 400;
-  error.status = 'Not Found';
 
   throw error;
 }
