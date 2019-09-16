@@ -6,10 +6,6 @@ const { sign } = require('jsonwebtoken');
 // Prisma Client
 const { prisma } = require('../../db/generated/prisma-client');
 
-/**
- * Create a new administrator
- * @param {Object} newAdministrator - Administrator Model
- */
 async function registerAdministrator(administrator) {
   const {
     email,
@@ -31,6 +27,7 @@ async function registerAdministrator(administrator) {
     lastName,
     mothersName: mothersName || null,
     phoneNumber: phoneNumber || null,
+    isAdmin: true,
   });
 
   // Create Administrator
@@ -84,7 +81,56 @@ async function login(user) {
   };
 }
 
+async function addEmployee(employee) {
+  const {
+    team,
+    position,
+    email,
+    password,
+    name,
+    lastName,
+    mothersName,
+    phoneNumber,
+  } = employee;
+
+  // Validate team
+  const foundTeam = await prisma.team({ id: team });
+
+  // Validate position
+  const foundPosition = await prisma.position({ id: position });
+
+  if (foundTeam && foundPosition) {
+    // Encrypt Password
+    const encryptedPassword = await hash(password, 10);
+
+    // Creat User
+    const { id } = await prisma.createUser({
+      email,
+      password: encryptedPassword,
+      name,
+      lastName,
+      mothersName: mothersName || null,
+      phoneNumber: phoneNumber || null,
+    });
+
+    const response = await prisma.createEmployee({
+      user: id,
+      team,
+      position,
+    });
+
+    return response;
+  }
+
+  const error = new Error(
+    'Invalid information please verify user, team and position values',
+  );
+
+  throw error;
+}
+
 module.exports = {
   registerAdministrator,
   login,
+  addEmployee,
 };

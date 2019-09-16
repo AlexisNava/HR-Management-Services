@@ -6,10 +6,10 @@ const { Router } = require('express');
 const { errorHandler, validateToken } = require('../../middlewares');
 
 // Schemas
-const { admin, user } = require('./schema');
+const { admin, user, employee } = require('./schema');
 
 // Controller
-const { registerAdministrator, login } = require('./controller');
+const { registerAdministrator, login, addEmployee } = require('./controller');
 
 // Utils
 const { writeNewError } = require('../../utils');
@@ -60,14 +60,53 @@ router.post(
   errorHandler,
 );
 
-router.post('/register', validateToken, (req, res) => {
-  res.status(200).json({
-    statusCode: 200,
-    status: 'OK',
-    data: null,
-    error: false,
-  });
-});
+router.post(
+  '/register',
+  validateToken,
+  async (req, res, next) => {
+    const { body, hostname, originalUrl } = req;
+
+    // Destructuring elements from the validated request
+    const { value, error } = await employee.validate(body);
+
+    if (error) {
+      // Write Error
+      writeNewError(
+        'Invalid request syntax',
+        400,
+        `http://${hostname}${originalUrl}`,
+      );
+
+      // Send Log
+      res.log.info(`Status: 400, Date: ${new Date()}`);
+
+      return res.status(400).json({
+        statusCode: 400,
+        status: 'Bad Request',
+        error: true,
+        errorMessage: 'Invalid request syntax',
+        errorData: error,
+      });
+    }
+
+    try {
+      const response = await addEmployee(value);
+
+      return res.status(200).json({
+        statusCode: 200,
+        status: 'OK',
+        data: response,
+        error: false,
+      });
+    } catch (e) {
+      e.statusCode = 409;
+      e.status = 'Conflict';
+
+      next(e);
+    }
+  },
+  errorHandler,
+);
 
 router.post(
   '/register-admin',
