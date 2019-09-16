@@ -18,36 +18,25 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
   run_tests:
-    docker:
-      - image: circleci/node:10.16.3
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
-      - run:
-          name: "Install Docker Compose"
-          command: |
-            curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      - run:
-          name: "Docker Compose Up"
-          command: docker-compose up -d
-      - run:
-          name: "Docker Compose ps"
-          command: docker-compose ps
-      - run:
-          name: "Prisma Logs"
-          command: |
-            docker logs project_prisma_1
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: "Prisma Deploy"
-          command: npx prisma deploy
       - run:
           name: "Run tests"
-          command: npm test
+          command: |
+            set +e             
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install --lts
+            nvm use --lts
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+            docker-compose up -d
+            docker-compose ps
+            npm i
+            npx prisma deploy
+            npm test
 
   run_linter:
     docker:
