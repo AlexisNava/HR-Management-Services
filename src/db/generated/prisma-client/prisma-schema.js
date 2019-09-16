@@ -6,7 +6,7 @@ module.exports = {
 /* GraphQL */ `type Administrator {
   id: ID!
   user: User!
-  team: Team
+  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -20,11 +20,11 @@ type AdministratorConnection {
 input AdministratorCreateInput {
   id: ID
   user: UserCreateOneWithoutAdministratorInput!
-  team: TeamCreateOneWithoutAdminInput
+  teams: TeamCreateManyWithoutAdminInput
 }
 
-input AdministratorCreateOneWithoutTeamInput {
-  create: AdministratorCreateWithoutTeamInput
+input AdministratorCreateOneWithoutTeamsInput {
+  create: AdministratorCreateWithoutTeamsInput
   connect: AdministratorWhereUniqueInput
 }
 
@@ -33,14 +33,14 @@ input AdministratorCreateOneWithoutUserInput {
   connect: AdministratorWhereUniqueInput
 }
 
-input AdministratorCreateWithoutTeamInput {
+input AdministratorCreateWithoutTeamsInput {
   id: ID
   user: UserCreateOneWithoutAdministratorInput!
 }
 
 input AdministratorCreateWithoutUserInput {
   id: ID
-  team: TeamCreateOneWithoutAdminInput
+  teams: TeamCreateManyWithoutAdminInput
 }
 
 type AdministratorEdge {
@@ -83,13 +83,13 @@ input AdministratorSubscriptionWhereInput {
 
 input AdministratorUpdateInput {
   user: UserUpdateOneRequiredWithoutAdministratorInput
-  team: TeamUpdateOneWithoutAdminInput
+  teams: TeamUpdateManyWithoutAdminInput
 }
 
-input AdministratorUpdateOneRequiredWithoutTeamInput {
-  create: AdministratorCreateWithoutTeamInput
-  update: AdministratorUpdateWithoutTeamDataInput
-  upsert: AdministratorUpsertWithoutTeamInput
+input AdministratorUpdateOneRequiredWithoutTeamsInput {
+  create: AdministratorCreateWithoutTeamsInput
+  update: AdministratorUpdateWithoutTeamsDataInput
+  upsert: AdministratorUpsertWithoutTeamsInput
   connect: AdministratorWhereUniqueInput
 }
 
@@ -102,17 +102,17 @@ input AdministratorUpdateOneWithoutUserInput {
   connect: AdministratorWhereUniqueInput
 }
 
-input AdministratorUpdateWithoutTeamDataInput {
+input AdministratorUpdateWithoutTeamsDataInput {
   user: UserUpdateOneRequiredWithoutAdministratorInput
 }
 
 input AdministratorUpdateWithoutUserDataInput {
-  team: TeamUpdateOneWithoutAdminInput
+  teams: TeamUpdateManyWithoutAdminInput
 }
 
-input AdministratorUpsertWithoutTeamInput {
-  update: AdministratorUpdateWithoutTeamDataInput!
-  create: AdministratorCreateWithoutTeamInput!
+input AdministratorUpsertWithoutTeamsInput {
+  update: AdministratorUpdateWithoutTeamsDataInput!
+  create: AdministratorCreateWithoutTeamsInput!
 }
 
 input AdministratorUpsertWithoutUserInput {
@@ -136,7 +136,9 @@ input AdministratorWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   user: UserWhereInput
-  team: TeamWhereInput
+  teams_every: TeamWhereInput
+  teams_some: TeamWhereInput
+  teams_none: TeamWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -206,7 +208,18 @@ type EmployeeConnection {
 input EmployeeCreateInput {
   id: ID
   user: UserCreateOneInput!
-  team: TeamCreateOneInput!
+  team: TeamCreateOneWithoutEmployeesInput!
+  position: PositionCreateOneInput!
+}
+
+input EmployeeCreateManyWithoutTeamInput {
+  create: [EmployeeCreateWithoutTeamInput!]
+  connect: [EmployeeWhereUniqueInput!]
+}
+
+input EmployeeCreateWithoutTeamInput {
+  id: ID
+  user: UserCreateOneInput!
   position: PositionCreateOneInput!
 }
 
@@ -230,6 +243,42 @@ type EmployeePreviousValues {
   updatedAt: DateTime!
 }
 
+input EmployeeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [EmployeeScalarWhereInput!]
+  OR: [EmployeeScalarWhereInput!]
+  NOT: [EmployeeScalarWhereInput!]
+}
+
 type EmployeeSubscriptionPayload {
   mutation: MutationType!
   node: Employee
@@ -250,8 +299,35 @@ input EmployeeSubscriptionWhereInput {
 
 input EmployeeUpdateInput {
   user: UserUpdateOneRequiredInput
-  team: TeamUpdateOneRequiredInput
+  team: TeamUpdateOneRequiredWithoutEmployeesInput
   position: PositionUpdateOneRequiredInput
+}
+
+input EmployeeUpdateManyWithoutTeamInput {
+  create: [EmployeeCreateWithoutTeamInput!]
+  delete: [EmployeeWhereUniqueInput!]
+  connect: [EmployeeWhereUniqueInput!]
+  set: [EmployeeWhereUniqueInput!]
+  disconnect: [EmployeeWhereUniqueInput!]
+  update: [EmployeeUpdateWithWhereUniqueWithoutTeamInput!]
+  upsert: [EmployeeUpsertWithWhereUniqueWithoutTeamInput!]
+  deleteMany: [EmployeeScalarWhereInput!]
+}
+
+input EmployeeUpdateWithoutTeamDataInput {
+  user: UserUpdateOneRequiredInput
+  position: PositionUpdateOneRequiredInput
+}
+
+input EmployeeUpdateWithWhereUniqueWithoutTeamInput {
+  where: EmployeeWhereUniqueInput!
+  data: EmployeeUpdateWithoutTeamDataInput!
+}
+
+input EmployeeUpsertWithWhereUniqueWithoutTeamInput {
+  where: EmployeeWhereUniqueInput!
+  update: EmployeeUpdateWithoutTeamDataInput!
+  create: EmployeeCreateWithoutTeamInput!
 }
 
 input EmployeeWhereInput {
@@ -520,6 +596,7 @@ type Subscription {
 type Team {
   id: ID!
   admin: Administrator!
+  employees(where: EmployeeWhereInput, orderBy: EmployeeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Employee!]
   name: String!
   isActive: Boolean!
   createdAt: DateTime!
@@ -534,23 +611,32 @@ type TeamConnection {
 
 input TeamCreateInput {
   id: ID
-  admin: AdministratorCreateOneWithoutTeamInput!
+  admin: AdministratorCreateOneWithoutTeamsInput!
+  employees: EmployeeCreateManyWithoutTeamInput
   name: String!
   isActive: Boolean
 }
 
-input TeamCreateOneInput {
-  create: TeamCreateInput
-  connect: TeamWhereUniqueInput
+input TeamCreateManyWithoutAdminInput {
+  create: [TeamCreateWithoutAdminInput!]
+  connect: [TeamWhereUniqueInput!]
 }
 
-input TeamCreateOneWithoutAdminInput {
-  create: TeamCreateWithoutAdminInput
+input TeamCreateOneWithoutEmployeesInput {
+  create: TeamCreateWithoutEmployeesInput
   connect: TeamWhereUniqueInput
 }
 
 input TeamCreateWithoutAdminInput {
   id: ID
+  employees: EmployeeCreateManyWithoutTeamInput
+  name: String!
+  isActive: Boolean
+}
+
+input TeamCreateWithoutEmployeesInput {
+  id: ID
+  admin: AdministratorCreateOneWithoutTeamsInput!
   name: String!
   isActive: Boolean
 }
@@ -581,6 +667,58 @@ type TeamPreviousValues {
   updatedAt: DateTime!
 }
 
+input TeamScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  isActive: Boolean
+  isActive_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [TeamScalarWhereInput!]
+  OR: [TeamScalarWhereInput!]
+  NOT: [TeamScalarWhereInput!]
+}
+
 type TeamSubscriptionPayload {
   mutation: MutationType!
   node: Team
@@ -599,14 +737,14 @@ input TeamSubscriptionWhereInput {
   NOT: [TeamSubscriptionWhereInput!]
 }
 
-input TeamUpdateDataInput {
-  admin: AdministratorUpdateOneRequiredWithoutTeamInput
+input TeamUpdateInput {
+  admin: AdministratorUpdateOneRequiredWithoutTeamsInput
+  employees: EmployeeUpdateManyWithoutTeamInput
   name: String
   isActive: Boolean
 }
 
-input TeamUpdateInput {
-  admin: AdministratorUpdateOneRequiredWithoutTeamInput
+input TeamUpdateManyDataInput {
   name: String
   isActive: Boolean
 }
@@ -616,33 +754,54 @@ input TeamUpdateManyMutationInput {
   isActive: Boolean
 }
 
-input TeamUpdateOneRequiredInput {
-  create: TeamCreateInput
-  update: TeamUpdateDataInput
-  upsert: TeamUpsertNestedInput
-  connect: TeamWhereUniqueInput
+input TeamUpdateManyWithoutAdminInput {
+  create: [TeamCreateWithoutAdminInput!]
+  delete: [TeamWhereUniqueInput!]
+  connect: [TeamWhereUniqueInput!]
+  set: [TeamWhereUniqueInput!]
+  disconnect: [TeamWhereUniqueInput!]
+  update: [TeamUpdateWithWhereUniqueWithoutAdminInput!]
+  upsert: [TeamUpsertWithWhereUniqueWithoutAdminInput!]
+  deleteMany: [TeamScalarWhereInput!]
+  updateMany: [TeamUpdateManyWithWhereNestedInput!]
 }
 
-input TeamUpdateOneWithoutAdminInput {
-  create: TeamCreateWithoutAdminInput
-  update: TeamUpdateWithoutAdminDataInput
-  upsert: TeamUpsertWithoutAdminInput
-  delete: Boolean
-  disconnect: Boolean
+input TeamUpdateManyWithWhereNestedInput {
+  where: TeamScalarWhereInput!
+  data: TeamUpdateManyDataInput!
+}
+
+input TeamUpdateOneRequiredWithoutEmployeesInput {
+  create: TeamCreateWithoutEmployeesInput
+  update: TeamUpdateWithoutEmployeesDataInput
+  upsert: TeamUpsertWithoutEmployeesInput
   connect: TeamWhereUniqueInput
 }
 
 input TeamUpdateWithoutAdminDataInput {
+  employees: EmployeeUpdateManyWithoutTeamInput
   name: String
   isActive: Boolean
 }
 
-input TeamUpsertNestedInput {
-  update: TeamUpdateDataInput!
-  create: TeamCreateInput!
+input TeamUpdateWithoutEmployeesDataInput {
+  admin: AdministratorUpdateOneRequiredWithoutTeamsInput
+  name: String
+  isActive: Boolean
 }
 
-input TeamUpsertWithoutAdminInput {
+input TeamUpdateWithWhereUniqueWithoutAdminInput {
+  where: TeamWhereUniqueInput!
+  data: TeamUpdateWithoutAdminDataInput!
+}
+
+input TeamUpsertWithoutEmployeesInput {
+  update: TeamUpdateWithoutEmployeesDataInput!
+  create: TeamCreateWithoutEmployeesInput!
+}
+
+input TeamUpsertWithWhereUniqueWithoutAdminInput {
+  where: TeamWhereUniqueInput!
   update: TeamUpdateWithoutAdminDataInput!
   create: TeamCreateWithoutAdminInput!
 }
@@ -663,6 +822,9 @@ input TeamWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   admin: AdministratorWhereInput
+  employees_every: EmployeeWhereInput
+  employees_some: EmployeeWhereInput
+  employees_none: EmployeeWhereInput
   name: String
   name_not: String
   name_in: [String!]
