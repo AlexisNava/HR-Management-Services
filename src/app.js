@@ -12,6 +12,7 @@ const { root, notFound, errorHandler } = require('./middlewares');
 const AuthServices = require('./services/auth');
 const PositionServices = require('./services/position');
 const TeamServices = require('./services/team');
+const EmployeeServices = require('./services/employee');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get('/', root);
 app.use('/api/auth', AuthServices);
 app.use('/api/position', PositionServices);
 app.use('/api/team', TeamServices);
+app.use('/api/employee', EmployeeServices);
 app.use(notFound);
 app.use(errorHandler);
 
