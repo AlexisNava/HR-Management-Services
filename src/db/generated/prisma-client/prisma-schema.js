@@ -5,7 +5,7 @@ module.exports = {
 
 /* GraphQL */ `type Administrator {
   id: ID!
-  user: User!
+  user: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -18,16 +18,7 @@ type AdministratorConnection {
 
 input AdministratorCreateInput {
   id: ID
-  user: UserCreateOneWithoutAdministratorInput!
-}
-
-input AdministratorCreateOneWithoutUserInput {
-  create: AdministratorCreateWithoutUserInput
-  connect: AdministratorWhereUniqueInput
-}
-
-input AdministratorCreateWithoutUserInput {
-  id: ID
+  user: String!
 }
 
 type AdministratorEdge {
@@ -38,6 +29,8 @@ type AdministratorEdge {
 enum AdministratorOrderByInput {
   id_ASC
   id_DESC
+  user_ASC
+  user_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -46,6 +39,7 @@ enum AdministratorOrderByInput {
 
 type AdministratorPreviousValues {
   id: ID!
+  user: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -69,14 +63,11 @@ input AdministratorSubscriptionWhereInput {
 }
 
 input AdministratorUpdateInput {
-  user: UserUpdateOneRequiredWithoutAdministratorInput
+  user: String
 }
 
-input AdministratorUpdateOneWithoutUserInput {
-  create: AdministratorCreateWithoutUserInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: AdministratorWhereUniqueInput
+input AdministratorUpdateManyMutationInput {
+  user: String
 }
 
 input AdministratorWhereInput {
@@ -94,7 +85,20 @@ input AdministratorWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  user: UserWhereInput
+  user: String
+  user_not: String
+  user_in: [String!]
+  user_not_in: [String!]
+  user_lt: String
+  user_lte: String
+  user_gt: String
+  user_gte: String
+  user_contains: String
+  user_not_contains: String
+  user_starts_with: String
+  user_not_starts_with: String
+  user_ends_with: String
+  user_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -148,7 +152,7 @@ scalar DateTime
 
 type Employee {
   id: ID!
-  user: User!
+  user: String!
   team: String!
   position: String!
   createdAt: DateTime!
@@ -163,7 +167,7 @@ type EmployeeConnection {
 
 input EmployeeCreateInput {
   id: ID
-  user: UserCreateOneInput!
+  user: String!
   team: String!
   position: String!
 }
@@ -176,6 +180,8 @@ type EmployeeEdge {
 enum EmployeeOrderByInput {
   id_ASC
   id_DESC
+  user_ASC
+  user_DESC
   team_ASC
   team_DESC
   position_ASC
@@ -188,6 +194,7 @@ enum EmployeeOrderByInput {
 
 type EmployeePreviousValues {
   id: ID!
+  user: String!
   team: String!
   position: String!
   createdAt: DateTime!
@@ -213,12 +220,13 @@ input EmployeeSubscriptionWhereInput {
 }
 
 input EmployeeUpdateInput {
-  user: UserUpdateOneRequiredInput
+  user: String
   team: String
   position: String
 }
 
 input EmployeeUpdateManyMutationInput {
+  user: String
   team: String
   position: String
 }
@@ -238,7 +246,20 @@ input EmployeeWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  user: UserWhereInput
+  user: String
+  user_not: String
+  user_in: [String!]
+  user_not_in: [String!]
+  user_lt: String
+  user_lte: String
+  user_gt: String
+  user_gte: String
+  user_contains: String
+  user_not_contains: String
+  user_starts_with: String
+  user_not_starts_with: String
+  user_ends_with: String
+  user_not_ends_with: String
   team: String
   team_not: String
   team_in: [String!]
@@ -297,6 +318,7 @@ scalar Long
 type Mutation {
   createAdministrator(data: AdministratorCreateInput!): Administrator!
   updateAdministrator(data: AdministratorUpdateInput!, where: AdministratorWhereUniqueInput!): Administrator
+  updateManyAdministrators(data: AdministratorUpdateManyMutationInput!, where: AdministratorWhereInput): BatchPayload!
   upsertAdministrator(where: AdministratorWhereUniqueInput!, create: AdministratorCreateInput!, update: AdministratorUpdateInput!): Administrator!
   deleteAdministrator(where: AdministratorWhereUniqueInput!): Administrator
   deleteManyAdministrators(where: AdministratorWhereInput): BatchPayload!
@@ -648,7 +670,6 @@ input TeamWhereUniqueInput {
 type User {
   id: ID!
   email: String!
-  administrator: Administrator
   password: String!
   name: String!
   lastName: String!
@@ -667,29 +688,6 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  id: ID
-  email: String!
-  administrator: AdministratorCreateOneWithoutUserInput
-  password: String!
-  name: String!
-  lastName: String!
-  mothersName: String
-  phoneNumber: String
-  isAdmin: Boolean
-  isActive: Boolean
-}
-
-input UserCreateOneInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-}
-
-input UserCreateOneWithoutAdministratorInput {
-  create: UserCreateWithoutAdministratorInput
-  connect: UserWhereUniqueInput
-}
-
-input UserCreateWithoutAdministratorInput {
   id: ID
   email: String!
   password: String!
@@ -763,21 +761,8 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
-input UserUpdateDataInput {
-  email: String
-  administrator: AdministratorUpdateOneWithoutUserInput
-  password: String
-  name: String
-  lastName: String
-  mothersName: String
-  phoneNumber: String
-  isAdmin: Boolean
-  isActive: Boolean
-}
-
 input UserUpdateInput {
   email: String
-  administrator: AdministratorUpdateOneWithoutUserInput
   password: String
   name: String
   lastName: String
@@ -796,41 +781,6 @@ input UserUpdateManyMutationInput {
   phoneNumber: String
   isAdmin: Boolean
   isActive: Boolean
-}
-
-input UserUpdateOneRequiredInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
-  connect: UserWhereUniqueInput
-}
-
-input UserUpdateOneRequiredWithoutAdministratorInput {
-  create: UserCreateWithoutAdministratorInput
-  update: UserUpdateWithoutAdministratorDataInput
-  upsert: UserUpsertWithoutAdministratorInput
-  connect: UserWhereUniqueInput
-}
-
-input UserUpdateWithoutAdministratorDataInput {
-  email: String
-  password: String
-  name: String
-  lastName: String
-  mothersName: String
-  phoneNumber: String
-  isAdmin: Boolean
-  isActive: Boolean
-}
-
-input UserUpsertNestedInput {
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
-}
-
-input UserUpsertWithoutAdministratorInput {
-  update: UserUpdateWithoutAdministratorDataInput!
-  create: UserCreateWithoutAdministratorInput!
 }
 
 input UserWhereInput {
@@ -862,7 +812,6 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
-  administrator: AdministratorWhereInput
   password: String
   password_not: String
   password_in: [String!]

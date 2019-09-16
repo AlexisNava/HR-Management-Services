@@ -1,6 +1,6 @@
 type Employee {
   id: ID! @id @unique
-  user: User!
+  user: String!
   team: String!
   position: String!
   createdAt: DateTime! @createdAt

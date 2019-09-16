@@ -1,7 +1,6 @@
 type User {
   id: ID! @id @unique
   email: String! @unique
-  administrator: Administrator @relation(link: INLINE)
   password: String!
   name: String!
   lastName: String!
