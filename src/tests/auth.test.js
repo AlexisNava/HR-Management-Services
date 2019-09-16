@@ -32,7 +32,7 @@ describe('Auth', () => {
       .user({ email: 'elon.musk@gmail.com' })
       .administrator();
 
-    if (foundUser) {
+    if (foundUser && foundAdministrator) {
       await prisma.deleteAdministrator({ id: foundAdministrator.id });
       await prisma.deleteUser({ id: foundUser.id });
     }
