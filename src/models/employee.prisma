@@ -1,0 +1,8 @@
+type Employee {
+  id: ID! @id @unique
+  user: String! @unique
+  team: String!
+  position: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}

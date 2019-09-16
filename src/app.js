@@ -5,33 +5,29 @@ const pino = require('express-pino-logger');
 
 require('dotenv').config();
 
-// Config
-const { hrManagementServicesDB } = require('./config/dbConnection');
-
 // Middlewares
 const { root, notFound, errorHandler } = require('./middlewares');
 
+// Services
+const AuthServices = require('./services/auth');
+const PositionServices = require('./services/position');
+const TeamServices = require('./services/team');
+const EmployeeServices = require('./services/employee');
+
 const app = express();
+
+app.disable('x-powered-by');
 
 // Use Middlewares
 app.use(pino());
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Test DB Connection
-hrManagementServicesDB
-  .authenticate()
-  .then(() => {
-    // eslint-disable-next-line no-console
-    console.log('Connection has been established successfully.');
-  })
-  .catch(error => {
-    // eslint-disable-next-line no-console
-    console.error('Unable to connect to the database:', error.message || error);
-  });
-
 app.get('/', root);
+app.use('/api/auth', AuthServices);
+app.use('/api/position', PositionServices);
+app.use('/api/team', TeamServices);
+app.use('/api/employee', EmployeeServices);
 app.use(notFound);
 app.use(errorHandler);
 

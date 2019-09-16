@@ -1,5 +1,5 @@
 const { appendFile } = require('fs');
-const shortid = require('shortid');
+const { generate } = require('shortid');
 
 /**
  * Get the corresponding value per environment
@@ -25,7 +25,7 @@ const getValueByEnv = (devValue, prodValue) => {
  * @param {String} filename - File Name, by default is errors.txt
  */
 function writeNewError(message, status, requestedURL, filename = 'errors.txt') {
-  const errorMessage = `${shortid.generate()} ${status} ${requestedURL}: ${message} | ${new Date()}\n\n`;
+  const errorMessage = `${generate()} ${status} ${requestedURL}: ${message} | ${new Date()}\n\n`;
 
   appendFile(filename, errorMessage, error => {
     if (error) {

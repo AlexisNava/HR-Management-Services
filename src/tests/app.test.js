@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../app');
 
 describe('App', () => {
-  it('GET / should respond OK status', async () => {
+  it('GET / should responds OK status', async () => {
     const { statusCode, body } = await request(app).get('/');
 
     expect(statusCode).toBe(200);
@@ -25,7 +25,7 @@ describe('App', () => {
       statusCode: 404,
       status: 'Not Found',
       data: null,
-      message: 'The resource http://127.0.0.1/a was not found',
+      errorMessage: 'The resource http://127.0.0.1/a was not found',
       error: true,
     });
   });

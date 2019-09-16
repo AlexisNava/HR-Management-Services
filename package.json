@@ -29,19 +29,19 @@
     "nodemon": "^1.19.2",
     "pino-pretty": "^3.2.1",
     "prettier": "^1.18.2",
-    "sequelize-cli": "^5.5.1",
+    "prisma": "^1.34.8",
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "@hapi/joi": "^16.0.1",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "express-pino-logger": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
-    "pg": "^7.12.1",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^5.18.4",
+    "prisma-client-lib": "^1.34.8",
     "shortid": "^2.2.15"
   },
   "jest": {

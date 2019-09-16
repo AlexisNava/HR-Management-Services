@@ -18,16 +18,29 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
   run_tests:
-    docker:
-      - image: circleci/node:10.16.3
+    machine: true
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: "Set Up Enviroment Variables"
+          command: |
+            echo 'export JWT_KEY=$JWT_KEY' >> $BASH_ENV
       - run:
           name: "Run tests"
-          command: npm test
+          command: |
+            set +e             
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install --lts
+            nvm use --lts
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+            docker-compose up -d
+            docker-compose ps
+            npm i
+            npx prisma deploy
+            npm test
 
   run_linter:
     docker:
