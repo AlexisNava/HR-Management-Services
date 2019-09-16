@@ -180,7 +180,6 @@ describe('Auth', () => {
 
   it('POST /api/auth/login should responds Conflict when the password is wrong', async () => {
     // Create User
-    // Create User
     await request(app)
       .post('/api/auth/register-admin')
       .send({
