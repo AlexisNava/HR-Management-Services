@@ -1,3 +1,7 @@
+require('dotenv').config();
+const { verify } = require('jsonwebtoken');
+
+// Utils
 const { writeNewError } = require('../utils');
 
 function root(req, res) {
@@ -27,7 +31,7 @@ function notFound(req, res) {
     statusCode: 404,
     status: 'Not Found',
     data: null,
-    message: `The resource http://${hostname}${originalUrl} was not found`,
+    errorMessage: `The resource http://${hostname}${originalUrl} was not found`,
     error: true,
   });
 }
@@ -60,4 +64,45 @@ function errorHandler(error, req, res, next) {
   });
 }
 
-module.exports = { root, notFound, errorHandler };
+// eslint-disable-next-line consistent-return
+async function validateToken(req, res, next) {
+  const { hostname, originalUrl, headers } = req;
+  const { authorization } = headers;
+
+  // Write error
+  writeNewError(
+    `The resource http://${hostname}${originalUrl} needs token to continue`,
+    401,
+    `http://${hostname}${originalUrl}`,
+  );
+
+  // Send Log
+  res.log.info(`Status: 401, Date: ${new Date()}`);
+
+  if (!authorization) {
+    return res.status(401).json({
+      statusCode: 401,
+      status: 'Unauthorized',
+      data: null,
+      error: true,
+      errorMessage: 'Authorization header is empty',
+    });
+  }
+
+  try {
+    const token = authorization.split(' ')[1];
+    const validatedToken = await verify(token, process.env.JWT_KEY);
+    res.validatedToken = validatedToken;
+
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      statusCode: 500,
+      status: 'Internal Server Error',
+      error: true,
+      errorMessage: error.message || error,
+    });
+  }
+}
+
+module.exports = { root, notFound, errorHandler, validateToken };

@@ -3,7 +3,7 @@
 const { Router } = require('express');
 
 // Middlewares
-const { errorHandler } = require('../../middlewares');
+const { errorHandler, validateToken } = require('../../middlewares');
 
 // Schemas
 const { admin, user } = require('./schema');
@@ -60,7 +60,7 @@ router.post(
   errorHandler,
 );
 
-router.post('/register', (req, res) => {
+router.post('/register', validateToken, (req, res) => {
   res.status(200).json({
     statusCode: 200,
     status: 'OK',
