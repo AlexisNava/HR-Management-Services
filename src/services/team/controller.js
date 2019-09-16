@@ -9,6 +9,18 @@ async function getAllTeams(validatedToken) {
   return response;
 }
 
+async function addTeam(team) {
+  const { name, admin } = team;
+
+  const response = await prisma.createTeam({
+    name,
+    admin,
+  });
+
+  return response;
+}
+
 module.exports = {
   getAllTeams,
+  addTeam,
 };

@@ -1,7 +1,6 @@
 type Team {
   id: ID! @id @unique
-  admin: Administrator!
-  employees: [Employee!]
+  admin: String! @unique
   name: String! @unique
   isActive: Boolean! @default(value: true)
   createdAt: DateTime! @createdAt

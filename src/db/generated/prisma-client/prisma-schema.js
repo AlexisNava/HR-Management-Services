@@ -6,7 +6,6 @@ module.exports = {
 /* GraphQL */ `type Administrator {
   id: ID!
   user: User!
-  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -20,12 +19,6 @@ type AdministratorConnection {
 input AdministratorCreateInput {
   id: ID
   user: UserCreateOneWithoutAdministratorInput!
-  teams: TeamCreateManyWithoutAdminInput
-}
-
-input AdministratorCreateOneWithoutTeamsInput {
-  create: AdministratorCreateWithoutTeamsInput
-  connect: AdministratorWhereUniqueInput
 }
 
 input AdministratorCreateOneWithoutUserInput {
@@ -33,14 +26,8 @@ input AdministratorCreateOneWithoutUserInput {
   connect: AdministratorWhereUniqueInput
 }
 
-input AdministratorCreateWithoutTeamsInput {
-  id: ID
-  user: UserCreateOneWithoutAdministratorInput!
-}
-
 input AdministratorCreateWithoutUserInput {
   id: ID
-  teams: TeamCreateManyWithoutAdminInput
 }
 
 type AdministratorEdge {
@@ -83,41 +70,13 @@ input AdministratorSubscriptionWhereInput {
 
 input AdministratorUpdateInput {
   user: UserUpdateOneRequiredWithoutAdministratorInput
-  teams: TeamUpdateManyWithoutAdminInput
-}
-
-input AdministratorUpdateOneRequiredWithoutTeamsInput {
-  create: AdministratorCreateWithoutTeamsInput
-  update: AdministratorUpdateWithoutTeamsDataInput
-  upsert: AdministratorUpsertWithoutTeamsInput
-  connect: AdministratorWhereUniqueInput
 }
 
 input AdministratorUpdateOneWithoutUserInput {
   create: AdministratorCreateWithoutUserInput
-  update: AdministratorUpdateWithoutUserDataInput
-  upsert: AdministratorUpsertWithoutUserInput
   delete: Boolean
   disconnect: Boolean
   connect: AdministratorWhereUniqueInput
-}
-
-input AdministratorUpdateWithoutTeamsDataInput {
-  user: UserUpdateOneRequiredWithoutAdministratorInput
-}
-
-input AdministratorUpdateWithoutUserDataInput {
-  teams: TeamUpdateManyWithoutAdminInput
-}
-
-input AdministratorUpsertWithoutTeamsInput {
-  update: AdministratorUpdateWithoutTeamsDataInput!
-  create: AdministratorCreateWithoutTeamsInput!
-}
-
-input AdministratorUpsertWithoutUserInput {
-  update: AdministratorUpdateWithoutUserDataInput!
-  create: AdministratorCreateWithoutUserInput!
 }
 
 input AdministratorWhereInput {
@@ -136,9 +95,6 @@ input AdministratorWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   user: UserWhereInput
-  teams_every: TeamWhereInput
-  teams_some: TeamWhereInput
-  teams_none: TeamWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -193,8 +149,8 @@ scalar DateTime
 type Employee {
   id: ID!
   user: User!
-  team: Team!
-  position: Position!
+  team: String!
+  position: String!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -208,19 +164,8 @@ type EmployeeConnection {
 input EmployeeCreateInput {
   id: ID
   user: UserCreateOneInput!
-  team: TeamCreateOneWithoutEmployeesInput!
-  position: PositionCreateOneInput!
-}
-
-input EmployeeCreateManyWithoutTeamInput {
-  create: [EmployeeCreateWithoutTeamInput!]
-  connect: [EmployeeWhereUniqueInput!]
-}
-
-input EmployeeCreateWithoutTeamInput {
-  id: ID
-  user: UserCreateOneInput!
-  position: PositionCreateOneInput!
+  team: String!
+  position: String!
 }
 
 type EmployeeEdge {
@@ -231,6 +176,10 @@ type EmployeeEdge {
 enum EmployeeOrderByInput {
   id_ASC
   id_DESC
+  team_ASC
+  team_DESC
+  position_ASC
+  position_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -239,44 +188,10 @@ enum EmployeeOrderByInput {
 
 type EmployeePreviousValues {
   id: ID!
+  team: String!
+  position: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-}
-
-input EmployeeScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [EmployeeScalarWhereInput!]
-  OR: [EmployeeScalarWhereInput!]
-  NOT: [EmployeeScalarWhereInput!]
 }
 
 type EmployeeSubscriptionPayload {
@@ -299,35 +214,13 @@ input EmployeeSubscriptionWhereInput {
 
 input EmployeeUpdateInput {
   user: UserUpdateOneRequiredInput
-  team: TeamUpdateOneRequiredWithoutEmployeesInput
-  position: PositionUpdateOneRequiredInput
+  team: String
+  position: String
 }
 
-input EmployeeUpdateManyWithoutTeamInput {
-  create: [EmployeeCreateWithoutTeamInput!]
-  delete: [EmployeeWhereUniqueInput!]
-  connect: [EmployeeWhereUniqueInput!]
-  set: [EmployeeWhereUniqueInput!]
-  disconnect: [EmployeeWhereUniqueInput!]
-  update: [EmployeeUpdateWithWhereUniqueWithoutTeamInput!]
-  upsert: [EmployeeUpsertWithWhereUniqueWithoutTeamInput!]
-  deleteMany: [EmployeeScalarWhereInput!]
-}
-
-input EmployeeUpdateWithoutTeamDataInput {
-  user: UserUpdateOneRequiredInput
-  position: PositionUpdateOneRequiredInput
-}
-
-input EmployeeUpdateWithWhereUniqueWithoutTeamInput {
-  where: EmployeeWhereUniqueInput!
-  data: EmployeeUpdateWithoutTeamDataInput!
-}
-
-input EmployeeUpsertWithWhereUniqueWithoutTeamInput {
-  where: EmployeeWhereUniqueInput!
-  update: EmployeeUpdateWithoutTeamDataInput!
-  create: EmployeeCreateWithoutTeamInput!
+input EmployeeUpdateManyMutationInput {
+  team: String
+  position: String
 }
 
 input EmployeeWhereInput {
@@ -346,8 +239,34 @@ input EmployeeWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   user: UserWhereInput
-  team: TeamWhereInput
-  position: PositionWhereInput
+  team: String
+  team_not: String
+  team_in: [String!]
+  team_not_in: [String!]
+  team_lt: String
+  team_lte: String
+  team_gt: String
+  team_gte: String
+  team_contains: String
+  team_not_contains: String
+  team_starts_with: String
+  team_not_starts_with: String
+  team_ends_with: String
+  team_not_ends_with: String
+  position: String
+  position_not: String
+  position_in: [String!]
+  position_not_in: [String!]
+  position_lt: String
+  position_lte: String
+  position_gt: String
+  position_gte: String
+  position_contains: String
+  position_not_contains: String
+  position_starts_with: String
+  position_not_starts_with: String
+  position_ends_with: String
+  position_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -383,6 +302,7 @@ type Mutation {
   deleteManyAdministrators(where: AdministratorWhereInput): BatchPayload!
   createEmployee(data: EmployeeCreateInput!): Employee!
   updateEmployee(data: EmployeeUpdateInput!, where: EmployeeWhereUniqueInput!): Employee
+  updateManyEmployees(data: EmployeeUpdateManyMutationInput!, where: EmployeeWhereInput): BatchPayload!
   upsertEmployee(where: EmployeeWhereUniqueInput!, create: EmployeeCreateInput!, update: EmployeeUpdateInput!): Employee!
   deleteEmployee(where: EmployeeWhereUniqueInput!): Employee
   deleteManyEmployees(where: EmployeeWhereInput): BatchPayload!
@@ -441,11 +361,6 @@ input PositionCreateInput {
   name: String!
 }
 
-input PositionCreateOneInput {
-  create: PositionCreateInput
-  connect: PositionWhereUniqueInput
-}
-
 type PositionEdge {
   node: Position!
   cursor: String!
@@ -487,28 +402,12 @@ input PositionSubscriptionWhereInput {
   NOT: [PositionSubscriptionWhereInput!]
 }
 
-input PositionUpdateDataInput {
-  name: String
-}
-
 input PositionUpdateInput {
   name: String
 }
 
 input PositionUpdateManyMutationInput {
   name: String
-}
-
-input PositionUpdateOneRequiredInput {
-  create: PositionCreateInput
-  update: PositionUpdateDataInput
-  upsert: PositionUpsertNestedInput
-  connect: PositionWhereUniqueInput
-}
-
-input PositionUpsertNestedInput {
-  update: PositionUpdateDataInput!
-  create: PositionCreateInput!
 }
 
 input PositionWhereInput {
@@ -595,8 +494,7 @@ type Subscription {
 
 type Team {
   id: ID!
-  admin: Administrator!
-  employees(where: EmployeeWhereInput, orderBy: EmployeeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Employee!]
+  admin: String!
   name: String!
   isActive: Boolean!
   createdAt: DateTime!
@@ -611,32 +509,7 @@ type TeamConnection {
 
 input TeamCreateInput {
   id: ID
-  admin: AdministratorCreateOneWithoutTeamsInput!
-  employees: EmployeeCreateManyWithoutTeamInput
-  name: String!
-  isActive: Boolean
-}
-
-input TeamCreateManyWithoutAdminInput {
-  create: [TeamCreateWithoutAdminInput!]
-  connect: [TeamWhereUniqueInput!]
-}
-
-input TeamCreateOneWithoutEmployeesInput {
-  create: TeamCreateWithoutEmployeesInput
-  connect: TeamWhereUniqueInput
-}
-
-input TeamCreateWithoutAdminInput {
-  id: ID
-  employees: EmployeeCreateManyWithoutTeamInput
-  name: String!
-  isActive: Boolean
-}
-
-input TeamCreateWithoutEmployeesInput {
-  id: ID
-  admin: AdministratorCreateOneWithoutTeamsInput!
+  admin: String!
   name: String!
   isActive: Boolean
 }
@@ -649,6 +522,8 @@ type TeamEdge {
 enum TeamOrderByInput {
   id_ASC
   id_DESC
+  admin_ASC
+  admin_DESC
   name_ASC
   name_DESC
   isActive_ASC
@@ -661,62 +536,11 @@ enum TeamOrderByInput {
 
 type TeamPreviousValues {
   id: ID!
+  admin: String!
   name: String!
   isActive: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime!
-}
-
-input TeamScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  isActive: Boolean
-  isActive_not: Boolean
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [TeamScalarWhereInput!]
-  OR: [TeamScalarWhereInput!]
-  NOT: [TeamScalarWhereInput!]
 }
 
 type TeamSubscriptionPayload {
@@ -738,72 +562,15 @@ input TeamSubscriptionWhereInput {
 }
 
 input TeamUpdateInput {
-  admin: AdministratorUpdateOneRequiredWithoutTeamsInput
-  employees: EmployeeUpdateManyWithoutTeamInput
-  name: String
-  isActive: Boolean
-}
-
-input TeamUpdateManyDataInput {
+  admin: String
   name: String
   isActive: Boolean
 }
 
 input TeamUpdateManyMutationInput {
+  admin: String
   name: String
   isActive: Boolean
-}
-
-input TeamUpdateManyWithoutAdminInput {
-  create: [TeamCreateWithoutAdminInput!]
-  delete: [TeamWhereUniqueInput!]
-  connect: [TeamWhereUniqueInput!]
-  set: [TeamWhereUniqueInput!]
-  disconnect: [TeamWhereUniqueInput!]
-  update: [TeamUpdateWithWhereUniqueWithoutAdminInput!]
-  upsert: [TeamUpsertWithWhereUniqueWithoutAdminInput!]
-  deleteMany: [TeamScalarWhereInput!]
-  updateMany: [TeamUpdateManyWithWhereNestedInput!]
-}
-
-input TeamUpdateManyWithWhereNestedInput {
-  where: TeamScalarWhereInput!
-  data: TeamUpdateManyDataInput!
-}
-
-input TeamUpdateOneRequiredWithoutEmployeesInput {
-  create: TeamCreateWithoutEmployeesInput
-  update: TeamUpdateWithoutEmployeesDataInput
-  upsert: TeamUpsertWithoutEmployeesInput
-  connect: TeamWhereUniqueInput
-}
-
-input TeamUpdateWithoutAdminDataInput {
-  employees: EmployeeUpdateManyWithoutTeamInput
-  name: String
-  isActive: Boolean
-}
-
-input TeamUpdateWithoutEmployeesDataInput {
-  admin: AdministratorUpdateOneRequiredWithoutTeamsInput
-  name: String
-  isActive: Boolean
-}
-
-input TeamUpdateWithWhereUniqueWithoutAdminInput {
-  where: TeamWhereUniqueInput!
-  data: TeamUpdateWithoutAdminDataInput!
-}
-
-input TeamUpsertWithoutEmployeesInput {
-  update: TeamUpdateWithoutEmployeesDataInput!
-  create: TeamCreateWithoutEmployeesInput!
-}
-
-input TeamUpsertWithWhereUniqueWithoutAdminInput {
-  where: TeamWhereUniqueInput!
-  update: TeamUpdateWithoutAdminDataInput!
-  create: TeamCreateWithoutAdminInput!
 }
 
 input TeamWhereInput {
@@ -821,10 +588,20 @@ input TeamWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  admin: AdministratorWhereInput
-  employees_every: EmployeeWhereInput
-  employees_some: EmployeeWhereInput
-  employees_none: EmployeeWhereInput
+  admin: String
+  admin_not: String
+  admin_in: [String!]
+  admin_not_in: [String!]
+  admin_lt: String
+  admin_lte: String
+  admin_gt: String
+  admin_gte: String
+  admin_contains: String
+  admin_not_contains: String
+  admin_starts_with: String
+  admin_not_starts_with: String
+  admin_ends_with: String
+  admin_not_ends_with: String
   name: String
   name_not: String
   name_in: [String!]
@@ -864,6 +641,7 @@ input TeamWhereInput {
 
 input TeamWhereUniqueInput {
   id: ID
+  admin: String
   name: String
 }
 
