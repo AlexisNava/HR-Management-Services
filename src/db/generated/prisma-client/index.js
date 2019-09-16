@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 Object.defineProperty(exports, '__esModule', { value: true });
 const prisma_lib_1 = require('prisma-client-lib');
 const { typeDefs } = require('./prisma-schema');
