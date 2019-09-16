@@ -25,7 +25,7 @@ describe('App', () => {
       statusCode: 404,
       status: 'Not Found',
       data: null,
-      message: 'The resource http://127.0.0.1/a was not found',
+      errorMessage: 'The resource http://127.0.0.1/a was not found',
       error: true,
     });
   });
