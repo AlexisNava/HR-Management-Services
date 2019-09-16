@@ -58,7 +58,7 @@ router.post(
         error: false,
       });
     } catch (e) {
-      next(e);
+      return next(e);
     }
   },
   errorHandler,
@@ -107,7 +107,7 @@ router.post(
       e.statusCode = 409;
       e.status = 'Conflict';
 
-      next(e);
+      return next(e);
     }
   },
   errorHandler,
@@ -153,7 +153,7 @@ router.post(
     } catch (err) {
       err.statusCode = 409;
       err.status = 'Conflict';
-      next(err);
+      return next(err);
     }
   },
   errorHandler,

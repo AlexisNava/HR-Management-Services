@@ -84,7 +84,7 @@ router.post(
       e.statusCode = 409;
       e.status = 'Conflict';
 
-      next(e);
+      return next(e);
     }
   },
   errorHandler,

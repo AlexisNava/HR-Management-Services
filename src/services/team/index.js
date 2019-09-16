@@ -37,7 +37,7 @@ router.get(
         error: false,
       });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   },
   errorHandler,
