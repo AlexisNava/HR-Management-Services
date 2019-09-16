@@ -25,8 +25,8 @@ async function addTeam(team) {
   }
 
   const error = new Error(`Not Found an administrator with the id: ${admin}`);
-  error.statusCode = 400;
-  error.status = 'Bad Requets';
+  error.statusCode = 409;
+  error.status = 'Conflict';
 
   throw error;
 }
