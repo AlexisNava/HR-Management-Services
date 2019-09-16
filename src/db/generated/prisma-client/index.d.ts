@@ -679,6 +679,7 @@ export interface AdministratorUpdateInput {
 
 export type TeamWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
 export interface UserUpdateOneRequiredWithoutAdministratorInput {
@@ -928,6 +929,7 @@ export interface AdministratorCreateWithoutUserInput {
 
 export type PositionWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
 export interface UserUpdateManyMutationInput {

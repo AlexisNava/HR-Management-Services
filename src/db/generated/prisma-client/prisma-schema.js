@@ -466,6 +466,7 @@ input PositionWhereInput {
 
 input PositionWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type Query {
@@ -650,6 +651,7 @@ input TeamWhereInput {
 
 input TeamWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type User {
