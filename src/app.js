@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('express');
 const bodyParser = require('body-parser');
 const pino = require('express-pino-logger');
 
