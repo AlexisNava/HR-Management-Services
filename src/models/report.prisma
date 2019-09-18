@@ -1,0 +1,10 @@
+type Report {
+  id: ID! @id @unique
+  assignedBy: String!
+  assignedTo: String!
+  arrivalTime: DateTime!
+  departureTime: DateTime!
+  workingDay: Int!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
