@@ -13,11 +13,29 @@ async function getAllTeams(validatedToken) {
 
     if (administrator) {
       // Get all the teams of the administrator
-      const response = await prisma.teams({
+      const teams = await prisma.teams({
         where: { admin: administrator.id },
       });
 
-      return response;
+      if (Array.isArray(teams) && teams.length < 1) {
+        const getEmployeesByTeam = await teams.map(async team => {
+          const employees = await prisma.employees({
+            where: { team: team.id },
+          });
+
+          return {
+            id: team.id,
+            name: team.name,
+            employees,
+          };
+        });
+
+        const employeesByTeam = await Promise.all(getEmployeesByTeam);
+
+        return employeesByTeam;
+      }
+
+      return teams;
     }
 
     const error = new Error('Not Found administrator');
