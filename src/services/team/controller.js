@@ -16,11 +16,32 @@ async function getAllTeams(validatedToken) {
       const teams = await prisma.teams({
         where: { admin: administrator.id },
       });
+      const users = await prisma.users();
+      const positions = await prisma.positions();
 
       if (Array.isArray(teams)) {
         const getEmployeesByTeam = await teams.map(async team => {
-          const employees = await prisma.employees({
+          const employeesInfo = await prisma.employees({
             where: { team: team.id },
+          });
+
+          const employees = employeesInfo.map(employee => {
+            const coresspondingUser = users.find(
+              usr => usr.id === employee.user,
+            );
+
+            return {
+              ...employee,
+              position: positions.find(pst => pst.id === employee.position)
+                .name,
+              name: coresspondingUser.name,
+              isAdmin: coresspondingUser.isAdmin,
+              phoneNumber: coresspondingUser.phoneNumber,
+              email: coresspondingUser.email,
+              lastName: coresspondingUser.lastName,
+              id: coresspondingUser.id,
+              mothersName: coresspondingUser.mothersName,
+            };
           });
 
           return {
