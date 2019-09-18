@@ -105,7 +105,41 @@ async function addTeam(team, validatedToken) {
   throw error;
 }
 
+async function getAllTeams(validatedToken) {
+  const { id } = validatedToken;
+
+  // Find User
+  const user = await prisma.user({ id });
+
+  if (user) {
+    // Find Admin
+    const administrator = await prisma.administrator({ user: user.id });
+
+    if (administrator) {
+      // Get all the teams of the administrator
+      const teams = await prisma.teams({
+        where: { admin: administrator.id },
+      });
+
+      return teams;
+    }
+
+    const error = new Error('Not Found administrator');
+    error.statusCode = 404;
+    error.status = 'Not Found';
+
+    throw error;
+  }
+
+  const error = new Error('Not Found user');
+  error.statusCode = 404;
+  error.status = 'Not Found';
+
+  throw error;
+}
+
 module.exports = {
   getAllTeamsEmployees,
   addTeam,
+  getAllTeams,
 };
