@@ -413,7 +413,6 @@ export interface AdministratorSubscriptionWhereInput {
 
 export type TeamWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  admin?: Maybe<String>;
   name?: Maybe<String>;
 }>;
 
