@@ -5,13 +5,14 @@ async function getAllTeams(validatedToken) {
   const { id } = validatedToken;
 
   // Find User
-  const user = prisma.user({ id });
+  const user = await prisma.user({ id });
 
   if (user) {
     // Find Admin
-    const administrator = prisma.administrator({ user: user.id });
+    const administrator = await prisma.administrator({ user: user.id });
 
     if (administrator) {
+      // Get all the teams of the administrator
       const response = await prisma.teams({
         where: { admin: administrator.id },
       });
@@ -33,24 +34,36 @@ async function getAllTeams(validatedToken) {
   throw error;
 }
 
-async function addTeam(team) {
-  const { name, admin } = team;
+async function addTeam(team, validatedToken) {
+  const { id } = validatedToken;
+  const { name } = team;
 
-  // Validate admin
-  const foundAdministrator = await prisma.administrator({ id: admin });
+  // Find User
+  const user = await prisma.user({ id });
 
-  if (foundAdministrator) {
-    const response = await prisma.createTeam({
-      name,
-      admin,
-    });
+  if (user) {
+    // Find Admin
+    const administrator = await prisma.administrator({ user: user.id });
 
-    return response;
+    if (administrator) {
+      const response = await prisma.createTeam({
+        admin: administrator.id,
+        name,
+      });
+
+      return response;
+    }
+
+    const error = new Error('Not Found administrator');
+    error.statusCode = 404;
+    error.status = 'Not Found';
+
+    throw error;
   }
 
-  const error = new Error(`Not Found an administrator with the id: ${admin}`);
-  error.statusCode = 409;
-  error.status = 'Conflict';
+  const error = new Error('Not Found user');
+  error.statusCode = 404;
+  error.status = 'Not Found';
 
   throw error;
 }

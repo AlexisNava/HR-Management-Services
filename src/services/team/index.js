@@ -48,6 +48,7 @@ router.post(
   validateToken,
   validateIfIsAdmin,
   async (req, res, next) => {
+    const { validatedToken } = res;
     const { body, hostname, originalUrl } = req;
 
     // Destructuring elements from the validated request
@@ -74,7 +75,7 @@ router.post(
     }
 
     try {
-      const response = await addTeam(value);
+      const response = await addTeam(value, validatedToken);
 
       return res.status(200).json({
         statusCode: 200,
