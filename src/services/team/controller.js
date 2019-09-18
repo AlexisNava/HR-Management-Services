@@ -4,9 +4,33 @@ const { prisma } = require('../../db/generated/prisma-client');
 async function getAllTeams(validatedToken) {
   const { id } = validatedToken;
 
-  const response = await prisma.teams({ where: { admin: id } });
+  // Find User
+  const user = prisma.user({ id });
 
-  return response;
+  if (user) {
+    // Find Admin
+    const administrator = prisma.administrator({ user: user.id });
+
+    if (administrator) {
+      const response = await prisma.teams({
+        where: { admin: administrator.id },
+      });
+
+      return response;
+    }
+
+    const error = new Error('Not Found administrator');
+    error.statusCode = 404;
+    error.status = 'Not Found';
+
+    throw error;
+  }
+
+  const error = new Error('Not Found user');
+  error.statusCode = 404;
+  error.status = 'Not Found';
+
+  throw error;
 }
 
 async function addTeam(team) {
