@@ -156,4 +156,48 @@ describe('Team', () => {
     expect(body).toHaveProperty('data');
     expect(body).toHaveProperty('error', false);
   });
+
+  it('POST /api/team should responds Internal Server Error when trying to add a team with a repeat name', async () => {
+    // Create User
+    await request(app)
+      .post('/api/auth/register-admin')
+      .send({
+        email: 'elon.musk@gmail.com',
+        password: `elon12345`,
+        name: 'Elon',
+        lastName: 'Musk',
+      })
+      .set('Accept', 'application/json');
+
+    // Log In
+    const response = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'elon.musk@gmail.com',
+        password: 'elon12345',
+      })
+      .set('Accept', 'application/json');
+
+    const token = response.body.data.token || '';
+
+    // Create Human Resources Team
+    await request(app)
+      .post('/api/team/')
+      .set('Acept', 'application/json')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ name: 'Human Resources' });
+
+    const { statusCode, body } = await request(app)
+      .post('/api/team/')
+      .set('Acept', 'application/json')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ name: 'Human Resources' });
+
+    expect(statusCode).toBe(500);
+    expect(body).toHaveProperty('statusCode', 500);
+    expect(body).toHaveProperty('status', 'Internal Server Error');
+    expect(body).toHaveProperty('data', null);
+    expect(body).toHaveProperty('error', true);
+    expect(body).toHaveProperty('errorMessage');
+  });
 });
