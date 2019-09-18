@@ -17,7 +17,7 @@ async function getAllTeams(validatedToken) {
         where: { admin: administrator.id },
       });
 
-      if (Array.isArray(teams) && teams.length < 1) {
+      if (Array.isArray(teams)) {
         const getEmployeesByTeam = await teams.map(async team => {
           const employees = await prisma.employees({
             where: { team: team.id },
@@ -34,8 +34,6 @@ async function getAllTeams(validatedToken) {
 
         return employeesByTeam;
       }
-
-      return teams;
     }
 
     const error = new Error('Not Found administrator');
