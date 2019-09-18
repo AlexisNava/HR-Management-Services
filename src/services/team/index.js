@@ -21,7 +21,7 @@ const { writeNewError } = require('../../utils');
 const router = Router();
 
 router.get(
-  '/',
+  '/employees',
   validateToken,
   validateIfIsAdmin,
   async (req, res, next) => {
