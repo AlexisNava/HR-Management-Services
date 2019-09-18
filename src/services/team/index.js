@@ -3,7 +3,7 @@
 const { Router } = require('express');
 
 // Controller
-const { getAllTeams, addTeam } = require('./controller');
+const { getAllTeamsEmployees, addTeam } = require('./controller');
 
 // Middlewares
 const {
@@ -28,7 +28,7 @@ router.get(
     try {
       const { validatedToken } = res;
 
-      const teams = await getAllTeams(validatedToken);
+      const teams = await getAllTeamsEmployees(validatedToken);
 
       res.status(200).json({
         statusCode: 200,

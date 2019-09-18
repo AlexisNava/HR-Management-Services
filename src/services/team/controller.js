@@ -1,7 +1,7 @@
 // Prisma Client
 const { prisma } = require('../../db/generated/prisma-client');
 
-async function getAllTeams(validatedToken) {
+async function getAllTeamsEmployees(validatedToken) {
   const { id } = validatedToken;
 
   // Find User
@@ -106,6 +106,6 @@ async function addTeam(team, validatedToken) {
 }
 
 module.exports = {
-  getAllTeams,
+  getAllTeamsEmployees,
   addTeam,
 };
