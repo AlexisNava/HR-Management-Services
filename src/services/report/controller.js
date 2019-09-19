@@ -9,15 +9,15 @@ async function addReport({
   workingDay,
 }) {
   // Validate admin
-  const admin = await prisma.administrator({ id: assignedBy });
+  const admin = await prisma.administrator({ user: assignedBy });
 
   if (admin) {
-    const employee = await prisma.employee({ id: assignedTo });
+    const employee = await prisma.employee({ user: assignedTo });
 
     if (employee) {
       const response = await prisma.createReport({
-        assignedBy,
-        assignedTo,
+        assignedBy: admin.id,
+        assignedTo: employee.id,
         arrivalTime,
         departureTime,
         workingDay,
