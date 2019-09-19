@@ -525,8 +525,8 @@ type Report {
   id: ID!
   assignedBy: String!
   assignedTo: String!
-  arrivalTime: DateTime!
-  departureTime: DateTime!
+  arrivalTime: Int!
+  departureTime: Int!
   workingDay: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -542,8 +542,8 @@ input ReportCreateInput {
   id: ID
   assignedBy: String!
   assignedTo: String!
-  arrivalTime: DateTime!
-  departureTime: DateTime!
+  arrivalTime: Int!
+  departureTime: Int!
   workingDay: Int!
 }
 
@@ -575,8 +575,8 @@ type ReportPreviousValues {
   id: ID!
   assignedBy: String!
   assignedTo: String!
-  arrivalTime: DateTime!
-  departureTime: DateTime!
+  arrivalTime: Int!
+  departureTime: Int!
   workingDay: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -603,16 +603,16 @@ input ReportSubscriptionWhereInput {
 input ReportUpdateInput {
   assignedBy: String
   assignedTo: String
-  arrivalTime: DateTime
-  departureTime: DateTime
+  arrivalTime: Int
+  departureTime: Int
   workingDay: Int
 }
 
 input ReportUpdateManyMutationInput {
   assignedBy: String
   assignedTo: String
-  arrivalTime: DateTime
-  departureTime: DateTime
+  arrivalTime: Int
+  departureTime: Int
   workingDay: Int
 }
 
@@ -659,22 +659,22 @@ input ReportWhereInput {
   assignedTo_not_starts_with: String
   assignedTo_ends_with: String
   assignedTo_not_ends_with: String
-  arrivalTime: DateTime
-  arrivalTime_not: DateTime
-  arrivalTime_in: [DateTime!]
-  arrivalTime_not_in: [DateTime!]
-  arrivalTime_lt: DateTime
-  arrivalTime_lte: DateTime
-  arrivalTime_gt: DateTime
-  arrivalTime_gte: DateTime
-  departureTime: DateTime
-  departureTime_not: DateTime
-  departureTime_in: [DateTime!]
-  departureTime_not_in: [DateTime!]
-  departureTime_lt: DateTime
-  departureTime_lte: DateTime
-  departureTime_gt: DateTime
-  departureTime_gte: DateTime
+  arrivalTime: Int
+  arrivalTime_not: Int
+  arrivalTime_in: [Int!]
+  arrivalTime_not_in: [Int!]
+  arrivalTime_lt: Int
+  arrivalTime_lte: Int
+  arrivalTime_gt: Int
+  arrivalTime_gte: Int
+  departureTime: Int
+  departureTime_not: Int
+  departureTime_in: [Int!]
+  departureTime_not_in: [Int!]
+  departureTime_lt: Int
+  departureTime_lte: Int
+  departureTime_gt: Int
+  departureTime_gte: Int
   workingDay: Int
   workingDay_not: Int
   workingDay_in: [Int!]

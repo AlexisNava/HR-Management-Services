@@ -411,8 +411,8 @@ export interface AdministratorCreateInput {
 export interface ReportUpdateManyMutationInput {
   assignedBy?: Maybe<String>;
   assignedTo?: Maybe<String>;
-  arrivalTime?: Maybe<DateTimeInput>;
-  departureTime?: Maybe<DateTimeInput>;
+  arrivalTime?: Maybe<Int>;
+  departureTime?: Maybe<Int>;
   workingDay?: Maybe<Int>;
 }
 
@@ -470,22 +470,22 @@ export interface ReportWhereInput {
   assignedTo_not_starts_with?: Maybe<String>;
   assignedTo_ends_with?: Maybe<String>;
   assignedTo_not_ends_with?: Maybe<String>;
-  arrivalTime?: Maybe<DateTimeInput>;
-  arrivalTime_not?: Maybe<DateTimeInput>;
-  arrivalTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  arrivalTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  arrivalTime_lt?: Maybe<DateTimeInput>;
-  arrivalTime_lte?: Maybe<DateTimeInput>;
-  arrivalTime_gt?: Maybe<DateTimeInput>;
-  arrivalTime_gte?: Maybe<DateTimeInput>;
-  departureTime?: Maybe<DateTimeInput>;
-  departureTime_not?: Maybe<DateTimeInput>;
-  departureTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  departureTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  departureTime_lt?: Maybe<DateTimeInput>;
-  departureTime_lte?: Maybe<DateTimeInput>;
-  departureTime_gt?: Maybe<DateTimeInput>;
-  departureTime_gte?: Maybe<DateTimeInput>;
+  arrivalTime?: Maybe<Int>;
+  arrivalTime_not?: Maybe<Int>;
+  arrivalTime_in?: Maybe<Int[] | Int>;
+  arrivalTime_not_in?: Maybe<Int[] | Int>;
+  arrivalTime_lt?: Maybe<Int>;
+  arrivalTime_lte?: Maybe<Int>;
+  arrivalTime_gt?: Maybe<Int>;
+  arrivalTime_gte?: Maybe<Int>;
+  departureTime?: Maybe<Int>;
+  departureTime_not?: Maybe<Int>;
+  departureTime_in?: Maybe<Int[] | Int>;
+  departureTime_not_in?: Maybe<Int[] | Int>;
+  departureTime_lt?: Maybe<Int>;
+  departureTime_lte?: Maybe<Int>;
+  departureTime_gt?: Maybe<Int>;
+  departureTime_gte?: Maybe<Int>;
   workingDay?: Maybe<Int>;
   workingDay_not?: Maybe<Int>;
   workingDay_in?: Maybe<Int[] | Int>;
@@ -523,8 +523,8 @@ export type EmployeeWhereUniqueInput = AtLeastOne<{
 export interface ReportUpdateInput {
   assignedBy?: Maybe<String>;
   assignedTo?: Maybe<String>;
-  arrivalTime?: Maybe<DateTimeInput>;
-  departureTime?: Maybe<DateTimeInput>;
+  arrivalTime?: Maybe<Int>;
+  departureTime?: Maybe<Int>;
   workingDay?: Maybe<Int>;
 }
 
@@ -610,8 +610,8 @@ export interface ReportCreateInput {
   id?: Maybe<ID_Input>;
   assignedBy: String;
   assignedTo: String;
-  arrivalTime: DateTimeInput;
-  departureTime: DateTimeInput;
+  arrivalTime: Int;
+  departureTime: Int;
   workingDay: Int;
 }
 
@@ -1508,8 +1508,8 @@ export interface Report {
   id: ID_Output;
   assignedBy: String;
   assignedTo: String;
-  arrivalTime: DateTimeOutput;
-  departureTime: DateTimeOutput;
+  arrivalTime: Int;
+  departureTime: Int;
   workingDay: Int;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -1519,8 +1519,8 @@ export interface ReportPromise extends Promise<Report>, Fragmentable {
   id: () => Promise<ID_Output>;
   assignedBy: () => Promise<String>;
   assignedTo: () => Promise<String>;
-  arrivalTime: () => Promise<DateTimeOutput>;
-  departureTime: () => Promise<DateTimeOutput>;
+  arrivalTime: () => Promise<Int>;
+  departureTime: () => Promise<Int>;
   workingDay: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -1532,8 +1532,8 @@ export interface ReportSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   assignedBy: () => Promise<AsyncIterator<String>>;
   assignedTo: () => Promise<AsyncIterator<String>>;
-  arrivalTime: () => Promise<AsyncIterator<DateTimeOutput>>;
-  departureTime: () => Promise<AsyncIterator<DateTimeOutput>>;
+  arrivalTime: () => Promise<AsyncIterator<Int>>;
+  departureTime: () => Promise<AsyncIterator<Int>>;
   workingDay: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -1545,8 +1545,8 @@ export interface ReportNullablePromise
   id: () => Promise<ID_Output>;
   assignedBy: () => Promise<String>;
   assignedTo: () => Promise<String>;
-  arrivalTime: () => Promise<DateTimeOutput>;
-  departureTime: () => Promise<DateTimeOutput>;
+  arrivalTime: () => Promise<Int>;
+  departureTime: () => Promise<Int>;
   workingDay: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -1882,8 +1882,8 @@ export interface ReportPreviousValues {
   id: ID_Output;
   assignedBy: String;
   assignedTo: String;
-  arrivalTime: DateTimeOutput;
-  departureTime: DateTimeOutput;
+  arrivalTime: Int;
+  departureTime: Int;
   workingDay: Int;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -1895,8 +1895,8 @@ export interface ReportPreviousValuesPromise
   id: () => Promise<ID_Output>;
   assignedBy: () => Promise<String>;
   assignedTo: () => Promise<String>;
-  arrivalTime: () => Promise<DateTimeOutput>;
-  departureTime: () => Promise<DateTimeOutput>;
+  arrivalTime: () => Promise<Int>;
+  departureTime: () => Promise<Int>;
   workingDay: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -1908,8 +1908,8 @@ export interface ReportPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   assignedBy: () => Promise<AsyncIterator<String>>;
   assignedTo: () => Promise<AsyncIterator<String>>;
-  arrivalTime: () => Promise<AsyncIterator<DateTimeOutput>>;
-  departureTime: () => Promise<AsyncIterator<DateTimeOutput>>;
+  arrivalTime: () => Promise<AsyncIterator<Int>>;
+  departureTime: () => Promise<AsyncIterator<Int>>;
   workingDay: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;

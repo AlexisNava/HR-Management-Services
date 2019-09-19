@@ -2,8 +2,8 @@ type Report {
   id: ID! @id @unique
   assignedBy: String!
   assignedTo: String!
-  arrivalTime: DateTime!
-  departureTime: DateTime!
+  arrivalTime: Int!
+  departureTime: Int!
   workingDay: Int!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
