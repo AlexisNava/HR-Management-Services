@@ -42,12 +42,31 @@ async function addReport({
 
 async function getAllReports({ id }) {
   // Find employee by id user
-  const employee = prisma.employee({ user: id });
+  const employee = await prisma.employee({ user: id });
 
   if (employee) {
-    const response = prisma.reports({ where: { assignedTo: employee.id } });
+    const reports = await prisma.reports({
+      where: { assignedTo: employee.id },
+    });
+    const formattedReports = await reports.map(async report => {
+      const admin = await prisma.administrator({ id: report.assignedBy });
+      const user = await prisma.user({ id: admin.user });
 
-    return response;
+      return {
+        ...report,
+        assignedBy: {
+          id: user.id,
+          name: user.name,
+          lastName: user.lastName,
+          mothersName: user.mothersName,
+          email: user.email,
+        },
+      };
+    });
+
+    const reportsWithUsers = await Promise.all(formattedReports);
+
+    return reportsWithUsers;
   }
 
   const error = new Error('Not Found employee');
