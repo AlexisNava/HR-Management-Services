@@ -1,19 +1,17 @@
-/* eslint-disable consistent-return */
-
 const { Router } = require('express');
 
 // Controller
-const { getAllTeamsEmployees, addTeam, getAllTeams } = require('./controller');
+const { addReport, getAllReports } = require('./controller');
+
+// Schema
+const { report } = require('./schema');
 
 // Middlewares
 const {
   validateToken,
-  errorHandler,
   validateIfIsAdmin,
+  errorHandler,
 } = require('../../middlewares');
-
-// Schema
-const { team } = require('./schema');
 
 // Utils
 const { writeNewError } = require('../../utils');
@@ -23,40 +21,16 @@ const router = Router();
 router.get(
   '/',
   validateToken,
-  validateIfIsAdmin,
   async (req, res, next) => {
+    const { validatedToken } = res;
+
     try {
-      const { validatedToken } = res;
+      const response = await getAllReports(validatedToken);
 
-      const teams = await getAllTeams(validatedToken);
-
-      res.status(200).json({
+      return res.status(200).json({
         statusCode: 200,
         status: 'OK',
-        data: teams,
-        error: false,
-      });
-    } catch (error) {
-      return next(error);
-    }
-  },
-  errorHandler,
-);
-
-router.get(
-  '/employees',
-  validateToken,
-  validateIfIsAdmin,
-  async (req, res, next) => {
-    try {
-      const { validatedToken } = res;
-
-      const teams = await getAllTeamsEmployees(validatedToken);
-
-      res.status(200).json({
-        statusCode: 200,
-        status: 'OK',
-        data: teams,
+        data: response,
         error: false,
       });
     } catch (error) {
@@ -71,11 +45,10 @@ router.post(
   validateToken,
   validateIfIsAdmin,
   async (req, res, next) => {
-    const { validatedToken } = res;
     const { body, hostname, originalUrl } = req;
 
     // Destructuring elements from the validated request
-    const { value, error } = await team.validate(body);
+    const { value, error } = await report.validate(body);
 
     if (error) {
       // Write Error
@@ -98,7 +71,7 @@ router.post(
     }
 
     try {
-      const response = await addTeam(value, validatedToken);
+      const response = await addReport(value);
 
       return res.status(200).json({
         statusCode: 200,
@@ -107,7 +80,7 @@ router.post(
         error: false,
       });
     } catch (e) {
-      next(e);
+      return next(e);
     }
   },
   errorHandler,

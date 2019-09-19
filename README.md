@@ -4,30 +4,26 @@ HR-Management-Services are the REST Services for the HR Management Project.
 
 [![CircleCI](https://circleci.com/gh/AlexisNava/HR-Management-Services/tree/master.svg?style=svg)](https://circleci.com/gh/AlexisNava/HR-Management-Services/tree/master)
 
+## Notes
+
+- The Web that consumes the services is [HR-Management-App](https://github.com/AlexisNava/HR-Management-App).
+
 ## Requirements
 
 - [Node LTS](https://nodejs.org/en/download/) >= *v*10.16.3
 - [yarn](https://yarnpkg.com/lang/en/) >= *v*1.17.3
 - [nvm](https://github.com/nvm-sh/nvm) >= *v*0.34.0
+- [Docker](https://docs.docker.com/install/) >= *v*19.03.2
+- [Docker Compose](https://docs.docker.com/compose/install/) >= *v*1.23.2
 - Create a `.env` file.
 
 ## .env Example File
 
-**Important**:
-
-- `DB_USERNAME` must have the same value that `POSTGRES_USER` in the `docker-compose` file. By defaul is equal to **hr-services**.
-
-- `DB_DEVELOPMENT_PASSWORD` must have the same value that `POSTGRES_PASSWORD` in the `docker-compose` file. By defaul is equal to **development_hr_services_2019**.
-
 ```.env
 
-DB_USERNAME = 'hr-services'
-DB_DEVELOPMENT_PASSWORD = 'development_hr_services_2019'
-DB_TEST_PASSWORD = ''
-DB_PRODUCTION_PASSWORD = ''
-DB_DEVELOPMENT_NAME = ''
-DB_TEST_NAME = ''
-DB_PRODUCTION_NAME = ''
+JWT_KEY=''
+PORT=''
+HOST=''
 
 ```
 
@@ -54,6 +50,22 @@ npm i
 
 ```
 
+3. Run the Prisma Database.
+
+```sh
+
+docker-compose up -d
+
+```
+
+4. Make Prisma Deploy
+
+```sh
+
+npx prisma deploy
+
+```
+
 ## Usage
 
 ### Run the project
@@ -73,6 +85,8 @@ npm run start:production
 ```
 
 ### Run Tests
+
+**Important**: You must complete the installation steps and add `JWT KEY` for run the tests correctly.
 
 ```sh
 

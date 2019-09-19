@@ -139,6 +139,10 @@ module.exports = {
         count: Int!
       }
 
+      type AggregateReport {
+        count: Int!
+      }
+
       type AggregateTeam {
         count: Int!
       }
@@ -370,6 +374,22 @@ module.exports = {
         ): Position!
         deletePosition(where: PositionWhereUniqueInput!): Position
         deleteManyPositions(where: PositionWhereInput): BatchPayload!
+        createReport(data: ReportCreateInput!): Report!
+        updateReport(
+          data: ReportUpdateInput!
+          where: ReportWhereUniqueInput!
+        ): Report
+        updateManyReports(
+          data: ReportUpdateManyMutationInput!
+          where: ReportWhereInput
+        ): BatchPayload!
+        upsertReport(
+          where: ReportWhereUniqueInput!
+          create: ReportCreateInput!
+          update: ReportUpdateInput!
+        ): Report!
+        deleteReport(where: ReportWhereUniqueInput!): Report
+        deleteManyReports(where: ReportWhereInput): BatchPayload!
         createTeam(data: TeamCreateInput!): Team!
         updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team
         updateManyTeams(
@@ -595,6 +615,25 @@ module.exports = {
           first: Int
           last: Int
         ): PositionConnection!
+        report(where: ReportWhereUniqueInput!): Report
+        reports(
+          where: ReportWhereInput
+          orderBy: ReportOrderByInput
+          skip: Int
+          after: String
+          before: String
+          first: Int
+          last: Int
+        ): [Report]!
+        reportsConnection(
+          where: ReportWhereInput
+          orderBy: ReportOrderByInput
+          skip: Int
+          after: String
+          before: String
+          first: Int
+          last: Int
+        ): ReportConnection!
         team(where: TeamWhereUniqueInput!): Team
         teams(
           where: TeamWhereInput
@@ -636,6 +675,193 @@ module.exports = {
         node(id: ID!): Node
       }
 
+      type Report {
+        id: ID!
+        assignedBy: String!
+        assignedTo: String!
+        arrivalTime: Int!
+        departureTime: Int!
+        workingDay: Int!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+      }
+
+      type ReportConnection {
+        pageInfo: PageInfo!
+        edges: [ReportEdge]!
+        aggregate: AggregateReport!
+      }
+
+      input ReportCreateInput {
+        id: ID
+        assignedBy: String!
+        assignedTo: String!
+        arrivalTime: Int!
+        departureTime: Int!
+        workingDay: Int!
+      }
+
+      type ReportEdge {
+        node: Report!
+        cursor: String!
+      }
+
+      enum ReportOrderByInput {
+        id_ASC
+        id_DESC
+        assignedBy_ASC
+        assignedBy_DESC
+        assignedTo_ASC
+        assignedTo_DESC
+        arrivalTime_ASC
+        arrivalTime_DESC
+        departureTime_ASC
+        departureTime_DESC
+        workingDay_ASC
+        workingDay_DESC
+        createdAt_ASC
+        createdAt_DESC
+        updatedAt_ASC
+        updatedAt_DESC
+      }
+
+      type ReportPreviousValues {
+        id: ID!
+        assignedBy: String!
+        assignedTo: String!
+        arrivalTime: Int!
+        departureTime: Int!
+        workingDay: Int!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+      }
+
+      type ReportSubscriptionPayload {
+        mutation: MutationType!
+        node: Report
+        updatedFields: [String!]
+        previousValues: ReportPreviousValues
+      }
+
+      input ReportSubscriptionWhereInput {
+        mutation_in: [MutationType!]
+        updatedFields_contains: String
+        updatedFields_contains_every: [String!]
+        updatedFields_contains_some: [String!]
+        node: ReportWhereInput
+        AND: [ReportSubscriptionWhereInput!]
+        OR: [ReportSubscriptionWhereInput!]
+        NOT: [ReportSubscriptionWhereInput!]
+      }
+
+      input ReportUpdateInput {
+        assignedBy: String
+        assignedTo: String
+        arrivalTime: Int
+        departureTime: Int
+        workingDay: Int
+      }
+
+      input ReportUpdateManyMutationInput {
+        assignedBy: String
+        assignedTo: String
+        arrivalTime: Int
+        departureTime: Int
+        workingDay: Int
+      }
+
+      input ReportWhereInput {
+        id: ID
+        id_not: ID
+        id_in: [ID!]
+        id_not_in: [ID!]
+        id_lt: ID
+        id_lte: ID
+        id_gt: ID
+        id_gte: ID
+        id_contains: ID
+        id_not_contains: ID
+        id_starts_with: ID
+        id_not_starts_with: ID
+        id_ends_with: ID
+        id_not_ends_with: ID
+        assignedBy: String
+        assignedBy_not: String
+        assignedBy_in: [String!]
+        assignedBy_not_in: [String!]
+        assignedBy_lt: String
+        assignedBy_lte: String
+        assignedBy_gt: String
+        assignedBy_gte: String
+        assignedBy_contains: String
+        assignedBy_not_contains: String
+        assignedBy_starts_with: String
+        assignedBy_not_starts_with: String
+        assignedBy_ends_with: String
+        assignedBy_not_ends_with: String
+        assignedTo: String
+        assignedTo_not: String
+        assignedTo_in: [String!]
+        assignedTo_not_in: [String!]
+        assignedTo_lt: String
+        assignedTo_lte: String
+        assignedTo_gt: String
+        assignedTo_gte: String
+        assignedTo_contains: String
+        assignedTo_not_contains: String
+        assignedTo_starts_with: String
+        assignedTo_not_starts_with: String
+        assignedTo_ends_with: String
+        assignedTo_not_ends_with: String
+        arrivalTime: Int
+        arrivalTime_not: Int
+        arrivalTime_in: [Int!]
+        arrivalTime_not_in: [Int!]
+        arrivalTime_lt: Int
+        arrivalTime_lte: Int
+        arrivalTime_gt: Int
+        arrivalTime_gte: Int
+        departureTime: Int
+        departureTime_not: Int
+        departureTime_in: [Int!]
+        departureTime_not_in: [Int!]
+        departureTime_lt: Int
+        departureTime_lte: Int
+        departureTime_gt: Int
+        departureTime_gte: Int
+        workingDay: Int
+        workingDay_not: Int
+        workingDay_in: [Int!]
+        workingDay_not_in: [Int!]
+        workingDay_lt: Int
+        workingDay_lte: Int
+        workingDay_gt: Int
+        workingDay_gte: Int
+        createdAt: DateTime
+        createdAt_not: DateTime
+        createdAt_in: [DateTime!]
+        createdAt_not_in: [DateTime!]
+        createdAt_lt: DateTime
+        createdAt_lte: DateTime
+        createdAt_gt: DateTime
+        createdAt_gte: DateTime
+        updatedAt: DateTime
+        updatedAt_not: DateTime
+        updatedAt_in: [DateTime!]
+        updatedAt_not_in: [DateTime!]
+        updatedAt_lt: DateTime
+        updatedAt_lte: DateTime
+        updatedAt_gt: DateTime
+        updatedAt_gte: DateTime
+        AND: [ReportWhereInput!]
+        OR: [ReportWhereInput!]
+        NOT: [ReportWhereInput!]
+      }
+
+      input ReportWhereUniqueInput {
+        id: ID
+      }
+
       type Subscription {
         administrator(
           where: AdministratorSubscriptionWhereInput
@@ -646,6 +872,7 @@ module.exports = {
         position(
           where: PositionSubscriptionWhereInput
         ): PositionSubscriptionPayload
+        report(where: ReportSubscriptionWhereInput): ReportSubscriptionPayload
         team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
         user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
       }
@@ -799,7 +1026,6 @@ module.exports = {
 
       input TeamWhereUniqueInput {
         id: ID
-        admin: String
         name: String
       }
 

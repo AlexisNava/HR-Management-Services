@@ -19,6 +19,7 @@ export interface Exists {
   administrator: (where?: AdministratorWhereInput) => Promise<boolean>;
   employee: (where?: EmployeeWhereInput) => Promise<boolean>;
   position: (where?: PositionWhereInput) => Promise<boolean>;
+  report: (where?: ReportWhereInput) => Promise<boolean>;
   team: (where?: TeamWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -101,6 +102,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => PositionConnectionPromise;
+  report: (where: ReportWhereUniqueInput) => ReportNullablePromise;
+  reports: (args?: {
+    where?: ReportWhereInput;
+    orderBy?: ReportOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Report>;
+  reportsConnection: (args?: {
+    where?: ReportWhereInput;
+    orderBy?: ReportOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ReportConnectionPromise;
   team: (where: TeamWhereUniqueInput) => TeamNullablePromise;
   teams: (args?: {
     where?: TeamWhereInput;
@@ -197,6 +217,22 @@ export interface Prisma {
   }) => PositionPromise;
   deletePosition: (where: PositionWhereUniqueInput) => PositionPromise;
   deleteManyPositions: (where?: PositionWhereInput) => BatchPayloadPromise;
+  createReport: (data: ReportCreateInput) => ReportPromise;
+  updateReport: (args: {
+    data: ReportUpdateInput;
+    where: ReportWhereUniqueInput;
+  }) => ReportPromise;
+  updateManyReports: (args: {
+    data: ReportUpdateManyMutationInput;
+    where?: ReportWhereInput;
+  }) => BatchPayloadPromise;
+  upsertReport: (args: {
+    where: ReportWhereUniqueInput;
+    create: ReportCreateInput;
+    update: ReportUpdateInput;
+  }) => ReportPromise;
+  deleteReport: (where: ReportWhereUniqueInput) => ReportPromise;
+  deleteManyReports: (where?: ReportWhereInput) => BatchPayloadPromise;
   createTeam: (data: TeamCreateInput) => TeamPromise;
   updateTeam: (args: {
     data: TeamUpdateInput;
@@ -247,6 +283,9 @@ export interface Subscription {
   position: (
     where?: PositionSubscriptionWhereInput
   ) => PositionSubscriptionPayloadSubscription;
+  report: (
+    where?: ReportSubscriptionWhereInput
+  ) => ReportSubscriptionPayloadSubscription;
   team: (
     where?: TeamSubscriptionWhereInput
   ) => TeamSubscriptionPayloadSubscription;
@@ -263,16 +302,6 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type AdministratorOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "user_ASC"
-  | "user_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
 export type EmployeeOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -287,11 +316,39 @@ export type EmployeeOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type AdministratorOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "user_ASC"
+  | "user_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type PositionOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type ReportOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "assignedBy_ASC"
+  | "assignedBy_DESC"
+  | "assignedTo_ASC"
+  | "assignedTo_DESC"
+  | "arrivalTime_ASC"
+  | "arrivalTime_DESC"
+  | "departureTime_ASC"
+  | "departureTime_DESC"
+  | "workingDay_ASC"
+  | "workingDay_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -342,22 +399,21 @@ export type AdministratorWhereUniqueInput = AtLeastOne<{
   user?: Maybe<String>;
 }>;
 
-export interface TeamUpdateInput {
-  admin?: Maybe<String>;
-  name?: Maybe<String>;
-  isActive?: Maybe<Boolean>;
-}
+export type ReportWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface AdministratorCreateInput {
   id?: Maybe<ID_Input>;
   user: String;
 }
 
-export interface TeamCreateInput {
-  id?: Maybe<ID_Input>;
-  admin: String;
-  name: String;
-  isActive?: Maybe<Boolean>;
+export interface ReportUpdateManyMutationInput {
+  assignedBy?: Maybe<String>;
+  assignedTo?: Maybe<String>;
+  arrivalTime?: Maybe<Int>;
+  departureTime?: Maybe<Int>;
+  workingDay?: Maybe<Int>;
 }
 
 export interface TeamSubscriptionWhereInput {
@@ -371,271 +427,105 @@ export interface TeamSubscriptionWhereInput {
   NOT?: Maybe<TeamSubscriptionWhereInput[] | TeamSubscriptionWhereInput>;
 }
 
-export interface PositionUpdateManyMutationInput {
-  name?: Maybe<String>;
+export interface ReportWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  assignedBy?: Maybe<String>;
+  assignedBy_not?: Maybe<String>;
+  assignedBy_in?: Maybe<String[] | String>;
+  assignedBy_not_in?: Maybe<String[] | String>;
+  assignedBy_lt?: Maybe<String>;
+  assignedBy_lte?: Maybe<String>;
+  assignedBy_gt?: Maybe<String>;
+  assignedBy_gte?: Maybe<String>;
+  assignedBy_contains?: Maybe<String>;
+  assignedBy_not_contains?: Maybe<String>;
+  assignedBy_starts_with?: Maybe<String>;
+  assignedBy_not_starts_with?: Maybe<String>;
+  assignedBy_ends_with?: Maybe<String>;
+  assignedBy_not_ends_with?: Maybe<String>;
+  assignedTo?: Maybe<String>;
+  assignedTo_not?: Maybe<String>;
+  assignedTo_in?: Maybe<String[] | String>;
+  assignedTo_not_in?: Maybe<String[] | String>;
+  assignedTo_lt?: Maybe<String>;
+  assignedTo_lte?: Maybe<String>;
+  assignedTo_gt?: Maybe<String>;
+  assignedTo_gte?: Maybe<String>;
+  assignedTo_contains?: Maybe<String>;
+  assignedTo_not_contains?: Maybe<String>;
+  assignedTo_starts_with?: Maybe<String>;
+  assignedTo_not_starts_with?: Maybe<String>;
+  assignedTo_ends_with?: Maybe<String>;
+  assignedTo_not_ends_with?: Maybe<String>;
+  arrivalTime?: Maybe<Int>;
+  arrivalTime_not?: Maybe<Int>;
+  arrivalTime_in?: Maybe<Int[] | Int>;
+  arrivalTime_not_in?: Maybe<Int[] | Int>;
+  arrivalTime_lt?: Maybe<Int>;
+  arrivalTime_lte?: Maybe<Int>;
+  arrivalTime_gt?: Maybe<Int>;
+  arrivalTime_gte?: Maybe<Int>;
+  departureTime?: Maybe<Int>;
+  departureTime_not?: Maybe<Int>;
+  departureTime_in?: Maybe<Int[] | Int>;
+  departureTime_not_in?: Maybe<Int[] | Int>;
+  departureTime_lt?: Maybe<Int>;
+  departureTime_lte?: Maybe<Int>;
+  departureTime_gt?: Maybe<Int>;
+  departureTime_gte?: Maybe<Int>;
+  workingDay?: Maybe<Int>;
+  workingDay_not?: Maybe<Int>;
+  workingDay_in?: Maybe<Int[] | Int>;
+  workingDay_not_in?: Maybe<Int[] | Int>;
+  workingDay_lt?: Maybe<Int>;
+  workingDay_lte?: Maybe<Int>;
+  workingDay_gt?: Maybe<Int>;
+  workingDay_gte?: Maybe<Int>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<ReportWhereInput[] | ReportWhereInput>;
+  OR?: Maybe<ReportWhereInput[] | ReportWhereInput>;
+  NOT?: Maybe<ReportWhereInput[] | ReportWhereInput>;
 }
 
-export interface EmployeeSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<EmployeeWhereInput>;
-  AND?: Maybe<
-    EmployeeSubscriptionWhereInput[] | EmployeeSubscriptionWhereInput
-  >;
-  OR?: Maybe<EmployeeSubscriptionWhereInput[] | EmployeeSubscriptionWhereInput>;
-  NOT?: Maybe<
-    EmployeeSubscriptionWhereInput[] | EmployeeSubscriptionWhereInput
-  >;
-}
-
-export interface PositionUpdateInput {
-  name?: Maybe<String>;
-}
-
-export interface AdministratorSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<AdministratorWhereInput>;
-  AND?: Maybe<
-    AdministratorSubscriptionWhereInput[] | AdministratorSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    AdministratorSubscriptionWhereInput[] | AdministratorSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    AdministratorSubscriptionWhereInput[] | AdministratorSubscriptionWhereInput
-  >;
-}
-
-export type TeamWhereUniqueInput = AtLeastOne<{
+export type EmployeeWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  admin?: Maybe<String>;
-  name?: Maybe<String>;
+  user?: Maybe<String>;
 }>;
 
-export interface AdministratorWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  user?: Maybe<String>;
-  user_not?: Maybe<String>;
-  user_in?: Maybe<String[] | String>;
-  user_not_in?: Maybe<String[] | String>;
-  user_lt?: Maybe<String>;
-  user_lte?: Maybe<String>;
-  user_gt?: Maybe<String>;
-  user_gte?: Maybe<String>;
-  user_contains?: Maybe<String>;
-  user_not_contains?: Maybe<String>;
-  user_starts_with?: Maybe<String>;
-  user_not_starts_with?: Maybe<String>;
-  user_ends_with?: Maybe<String>;
-  user_not_ends_with?: Maybe<String>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<AdministratorWhereInput[] | AdministratorWhereInput>;
-  OR?: Maybe<AdministratorWhereInput[] | AdministratorWhereInput>;
-  NOT?: Maybe<AdministratorWhereInput[] | AdministratorWhereInput>;
-}
-
-export interface PositionCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface UserUpdateInput {
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  name?: Maybe<String>;
-  lastName?: Maybe<String>;
-  mothersName?: Maybe<String>;
-  phoneNumber?: Maybe<String>;
-  isAdmin?: Maybe<Boolean>;
-  isActive?: Maybe<Boolean>;
-}
-
-export interface TeamWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  admin?: Maybe<String>;
-  admin_not?: Maybe<String>;
-  admin_in?: Maybe<String[] | String>;
-  admin_not_in?: Maybe<String[] | String>;
-  admin_lt?: Maybe<String>;
-  admin_lte?: Maybe<String>;
-  admin_gt?: Maybe<String>;
-  admin_gte?: Maybe<String>;
-  admin_contains?: Maybe<String>;
-  admin_not_contains?: Maybe<String>;
-  admin_starts_with?: Maybe<String>;
-  admin_not_starts_with?: Maybe<String>;
-  admin_ends_with?: Maybe<String>;
-  admin_not_ends_with?: Maybe<String>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  isActive?: Maybe<Boolean>;
-  isActive_not?: Maybe<Boolean>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<TeamWhereInput[] | TeamWhereInput>;
-  OR?: Maybe<TeamWhereInput[] | TeamWhereInput>;
-  NOT?: Maybe<TeamWhereInput[] | TeamWhereInput>;
-}
-
-export type PositionWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  name?: Maybe<String>;
-}>;
-
-export interface EmployeeUpdateManyMutationInput {
-  user?: Maybe<String>;
-  team?: Maybe<String>;
-  position?: Maybe<String>;
-}
-
-export interface PositionWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<PositionWhereInput[] | PositionWhereInput>;
-  OR?: Maybe<PositionWhereInput[] | PositionWhereInput>;
-  NOT?: Maybe<PositionWhereInput[] | PositionWhereInput>;
-}
-
-export interface EmployeeUpdateInput {
-  user?: Maybe<String>;
-  team?: Maybe<String>;
-  position?: Maybe<String>;
-}
-
-export interface PositionSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<PositionWhereInput>;
-  AND?: Maybe<
-    PositionSubscriptionWhereInput[] | PositionSubscriptionWhereInput
-  >;
-  OR?: Maybe<PositionSubscriptionWhereInput[] | PositionSubscriptionWhereInput>;
-  NOT?: Maybe<
-    PositionSubscriptionWhereInput[] | PositionSubscriptionWhereInput
-  >;
-}
-
-export interface EmployeeCreateInput {
-  id?: Maybe<ID_Input>;
-  user: String;
-  team: String;
-  position: String;
+export interface ReportUpdateInput {
+  assignedBy?: Maybe<String>;
+  assignedTo?: Maybe<String>;
+  arrivalTime?: Maybe<Int>;
+  departureTime?: Maybe<Int>;
+  workingDay?: Maybe<Int>;
 }
 
 export interface EmployeeWhereInput {
@@ -714,6 +604,301 @@ export interface EmployeeWhereInput {
   AND?: Maybe<EmployeeWhereInput[] | EmployeeWhereInput>;
   OR?: Maybe<EmployeeWhereInput[] | EmployeeWhereInput>;
   NOT?: Maybe<EmployeeWhereInput[] | EmployeeWhereInput>;
+}
+
+export interface ReportCreateInput {
+  id?: Maybe<ID_Input>;
+  assignedBy: String;
+  assignedTo: String;
+  arrivalTime: Int;
+  departureTime: Int;
+  workingDay: Int;
+}
+
+export interface AdministratorSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<AdministratorWhereInput>;
+  AND?: Maybe<
+    AdministratorSubscriptionWhereInput[] | AdministratorSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    AdministratorSubscriptionWhereInput[] | AdministratorSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    AdministratorSubscriptionWhereInput[] | AdministratorSubscriptionWhereInput
+  >;
+}
+
+export interface PositionUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface UserUpdateInput {
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  name?: Maybe<String>;
+  lastName?: Maybe<String>;
+  mothersName?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  isAdmin?: Maybe<Boolean>;
+  isActive?: Maybe<Boolean>;
+}
+
+export interface PositionUpdateInput {
+  name?: Maybe<String>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  email: String;
+  password: String;
+  name: String;
+  lastName: String;
+  mothersName?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  isAdmin?: Maybe<Boolean>;
+  isActive?: Maybe<Boolean>;
+}
+
+export type TeamWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export interface AdministratorWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<String>;
+  user_not?: Maybe<String>;
+  user_in?: Maybe<String[] | String>;
+  user_not_in?: Maybe<String[] | String>;
+  user_lt?: Maybe<String>;
+  user_lte?: Maybe<String>;
+  user_gt?: Maybe<String>;
+  user_gte?: Maybe<String>;
+  user_contains?: Maybe<String>;
+  user_not_contains?: Maybe<String>;
+  user_starts_with?: Maybe<String>;
+  user_not_starts_with?: Maybe<String>;
+  user_ends_with?: Maybe<String>;
+  user_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<AdministratorWhereInput[] | AdministratorWhereInput>;
+  OR?: Maybe<AdministratorWhereInput[] | AdministratorWhereInput>;
+  NOT?: Maybe<AdministratorWhereInput[] | AdministratorWhereInput>;
+}
+
+export interface PositionCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export interface TeamUpdateInput {
+  admin?: Maybe<String>;
+  name?: Maybe<String>;
+  isActive?: Maybe<Boolean>;
+}
+
+export interface TeamWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  admin?: Maybe<String>;
+  admin_not?: Maybe<String>;
+  admin_in?: Maybe<String[] | String>;
+  admin_not_in?: Maybe<String[] | String>;
+  admin_lt?: Maybe<String>;
+  admin_lte?: Maybe<String>;
+  admin_gt?: Maybe<String>;
+  admin_gte?: Maybe<String>;
+  admin_contains?: Maybe<String>;
+  admin_not_contains?: Maybe<String>;
+  admin_starts_with?: Maybe<String>;
+  admin_not_starts_with?: Maybe<String>;
+  admin_ends_with?: Maybe<String>;
+  admin_not_ends_with?: Maybe<String>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  isActive?: Maybe<Boolean>;
+  isActive_not?: Maybe<Boolean>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<TeamWhereInput[] | TeamWhereInput>;
+  OR?: Maybe<TeamWhereInput[] | TeamWhereInput>;
+  NOT?: Maybe<TeamWhereInput[] | TeamWhereInput>;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface EmployeeUpdateManyMutationInput {
+  user?: Maybe<String>;
+  team?: Maybe<String>;
+  position?: Maybe<String>;
+}
+
+export interface PositionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PositionWhereInput>;
+  AND?: Maybe<
+    PositionSubscriptionWhereInput[] | PositionSubscriptionWhereInput
+  >;
+  OR?: Maybe<PositionSubscriptionWhereInput[] | PositionSubscriptionWhereInput>;
+  NOT?: Maybe<
+    PositionSubscriptionWhereInput[] | PositionSubscriptionWhereInput
+  >;
+}
+
+export interface EmployeeUpdateInput {
+  user?: Maybe<String>;
+  team?: Maybe<String>;
+  position?: Maybe<String>;
+}
+
+export interface UserUpdateManyMutationInput {
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  name?: Maybe<String>;
+  lastName?: Maybe<String>;
+  mothersName?: Maybe<String>;
+  phoneNumber?: Maybe<String>;
+  isAdmin?: Maybe<Boolean>;
+  isActive?: Maybe<Boolean>;
+}
+
+export interface EmployeeCreateInput {
+  id?: Maybe<ID_Input>;
+  user: String;
+  team: String;
+  position: String;
+}
+
+export interface PositionWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<PositionWhereInput[] | PositionWhereInput>;
+  OR?: Maybe<PositionWhereInput[] | PositionWhereInput>;
+  NOT?: Maybe<PositionWhereInput[] | PositionWhereInput>;
 }
 
 export interface UserWhereInput {
@@ -853,48 +1038,47 @@ export interface AdministratorUpdateManyMutationInput {
   user?: Maybe<String>;
 }
 
-export interface UserUpdateManyMutationInput {
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-  name?: Maybe<String>;
-  lastName?: Maybe<String>;
-  mothersName?: Maybe<String>;
-  phoneNumber?: Maybe<String>;
-  isAdmin?: Maybe<Boolean>;
-  isActive?: Maybe<Boolean>;
-}
-
-export type EmployeeWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  user?: Maybe<String>;
-}>;
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-}
-
 export interface TeamUpdateManyMutationInput {
   admin?: Maybe<String>;
   name?: Maybe<String>;
   isActive?: Maybe<Boolean>;
 }
 
-export interface UserCreateInput {
+export type PositionWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  name?: Maybe<String>;
+}>;
+
+export interface EmployeeSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<EmployeeWhereInput>;
+  AND?: Maybe<
+    EmployeeSubscriptionWhereInput[] | EmployeeSubscriptionWhereInput
+  >;
+  OR?: Maybe<EmployeeSubscriptionWhereInput[] | EmployeeSubscriptionWhereInput>;
+  NOT?: Maybe<
+    EmployeeSubscriptionWhereInput[] | EmployeeSubscriptionWhereInput
+  >;
+}
+
+export interface ReportSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ReportWhereInput>;
+  AND?: Maybe<ReportSubscriptionWhereInput[] | ReportSubscriptionWhereInput>;
+  OR?: Maybe<ReportSubscriptionWhereInput[] | ReportSubscriptionWhereInput>;
+  NOT?: Maybe<ReportSubscriptionWhereInput[] | ReportSubscriptionWhereInput>;
+}
+
+export interface TeamCreateInput {
   id?: Maybe<ID_Input>;
-  email: String;
-  password: String;
+  admin: String;
   name: String;
-  lastName: String;
-  mothersName?: Maybe<String>;
-  phoneNumber?: Maybe<String>;
-  isAdmin?: Maybe<Boolean>;
   isActive?: Maybe<Boolean>;
 }
 
@@ -946,6 +1130,59 @@ export interface UserPreviousValuesSubscription
   isActive: () => Promise<AsyncIterator<Boolean>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface Position {
+  id: ID_Output;
+  name: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface PositionPromise extends Promise<Position>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface PositionSubscription
+  extends Promise<AsyncIterator<Position>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface PositionNullablePromise
+  extends Promise<Position | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface AdministratorConnection {
+  pageInfo: PageInfo;
+  edges: AdministratorEdge[];
+}
+
+export interface AdministratorConnectionPromise
+  extends Promise<AdministratorConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<AdministratorEdge>>() => T;
+  aggregate: <T = AggregateAdministratorPromise>() => T;
+}
+
+export interface AdministratorConnectionSubscription
+  extends Promise<AsyncIterator<AdministratorConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<AdministratorEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateAdministratorSubscription>() => T;
 }
 
 export interface AggregateEmployee {
@@ -1020,21 +1257,57 @@ export interface AggregateUserSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface UserEdge {
-  node: User;
-  cursor: String;
+export interface EmployeeConnection {
+  pageInfo: PageInfo;
+  edges: EmployeeEdge[];
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface EmployeeConnectionPromise
+  extends Promise<EmployeeConnection>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<EmployeeEdge>>() => T;
+  aggregate: <T = AggregateEmployeePromise>() => T;
+}
+
+export interface EmployeeConnectionSubscription
+  extends Promise<AsyncIterator<EmployeeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<EmployeeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateEmployeeSubscription>() => T;
+}
+
+export interface AggregateTeam {
+  count: Int;
+}
+
+export interface AggregateTeamPromise
+  extends Promise<AggregateTeam>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTeamSubscription
+  extends Promise<AsyncIterator<AggregateTeam>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface TeamSubscriptionPayload {
@@ -1062,46 +1335,353 @@ export interface TeamSubscriptionPayloadSubscription
   previousValues: <T = TeamPreviousValuesSubscription>() => T;
 }
 
-export interface AdministratorConnection {
-  pageInfo: PageInfo;
-  edges: AdministratorEdge[];
+export interface TeamEdge {
+  node: Team;
+  cursor: String;
 }
 
-export interface AdministratorConnectionPromise
-  extends Promise<AdministratorConnection>,
+export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
+  node: <T = TeamPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TeamEdgeSubscription
+  extends Promise<AsyncIterator<TeamEdge>>,
+    Fragmentable {
+  node: <T = TeamSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Administrator {
+  id: ID_Output;
+  user: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface AdministratorPromise
+  extends Promise<Administrator>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface AdministratorSubscription
+  extends Promise<AsyncIterator<Administrator>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface AdministratorNullablePromise
+  extends Promise<Administrator | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface AdministratorSubscriptionPayload {
+  mutation: MutationType;
+  node: Administrator;
+  updatedFields: String[];
+  previousValues: AdministratorPreviousValues;
+}
+
+export interface AdministratorSubscriptionPayloadPromise
+  extends Promise<AdministratorSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = AdministratorPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = AdministratorPreviousValuesPromise>() => T;
+}
+
+export interface AdministratorSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<AdministratorSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = AdministratorSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = AdministratorPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateReport {
+  count: Int;
+}
+
+export interface AggregateReportPromise
+  extends Promise<AggregateReport>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateReportSubscription
+  extends Promise<AsyncIterator<AggregateReport>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AdministratorPreviousValues {
+  id: ID_Output;
+  user: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface AdministratorPreviousValuesPromise
+  extends Promise<AdministratorPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface AdministratorPreviousValuesSubscription
+  extends Promise<AsyncIterator<AdministratorPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface ReportConnection {
+  pageInfo: PageInfo;
+  edges: ReportEdge[];
+}
+
+export interface ReportConnectionPromise
+  extends Promise<ReportConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<AdministratorEdge>>() => T;
-  aggregate: <T = AggregateAdministratorPromise>() => T;
+  edges: <T = FragmentableArray<ReportEdge>>() => T;
+  aggregate: <T = AggregateReportPromise>() => T;
 }
 
-export interface AdministratorConnectionSubscription
-  extends Promise<AsyncIterator<AdministratorConnection>>,
+export interface ReportConnectionSubscription
+  extends Promise<AsyncIterator<ReportConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<AdministratorEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateAdministratorSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ReportEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateReportSubscription>() => T;
 }
 
-export interface EmployeeConnection {
-  pageInfo: PageInfo;
-  edges: EmployeeEdge[];
+export interface TeamPreviousValues {
+  id: ID_Output;
+  admin: String;
+  name: String;
+  isActive: Boolean;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
 }
 
-export interface EmployeeConnectionPromise
-  extends Promise<EmployeeConnection>,
+export interface TeamPreviousValuesPromise
+  extends Promise<TeamPreviousValues>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<EmployeeEdge>>() => T;
-  aggregate: <T = AggregateEmployeePromise>() => T;
+  id: () => Promise<ID_Output>;
+  admin: () => Promise<String>;
+  name: () => Promise<String>;
+  isActive: () => Promise<Boolean>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface EmployeeConnectionSubscription
-  extends Promise<AsyncIterator<EmployeeConnection>>,
+export interface TeamPreviousValuesSubscription
+  extends Promise<AsyncIterator<TeamPreviousValues>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<EmployeeEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateEmployeeSubscription>() => T;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  admin: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  isActive: () => Promise<AsyncIterator<Boolean>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface Report {
+  id: ID_Output;
+  assignedBy: String;
+  assignedTo: String;
+  arrivalTime: Int;
+  departureTime: Int;
+  workingDay: Int;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface ReportPromise extends Promise<Report>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  assignedBy: () => Promise<String>;
+  assignedTo: () => Promise<String>;
+  arrivalTime: () => Promise<Int>;
+  departureTime: () => Promise<Int>;
+  workingDay: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface ReportSubscription
+  extends Promise<AsyncIterator<Report>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  assignedBy: () => Promise<AsyncIterator<String>>;
+  assignedTo: () => Promise<AsyncIterator<String>>;
+  arrivalTime: () => Promise<AsyncIterator<Int>>;
+  departureTime: () => Promise<AsyncIterator<Int>>;
+  workingDay: () => Promise<AsyncIterator<Int>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface ReportNullablePromise
+  extends Promise<Report | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  assignedBy: () => Promise<String>;
+  assignedTo: () => Promise<String>;
+  arrivalTime: () => Promise<Int>;
+  departureTime: () => Promise<Int>;
+  workingDay: () => Promise<Int>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface EmployeeSubscriptionPayload {
+  mutation: MutationType;
+  node: Employee;
+  updatedFields: String[];
+  previousValues: EmployeePreviousValues;
+}
+
+export interface EmployeeSubscriptionPayloadPromise
+  extends Promise<EmployeeSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = EmployeePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = EmployeePreviousValuesPromise>() => T;
+}
+
+export interface EmployeeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<EmployeeSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = EmployeeSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = EmployeePreviousValuesSubscription>() => T;
+}
+
+export interface PositionEdge {
+  node: Position;
+  cursor: String;
+}
+
+export interface PositionEdgePromise
+  extends Promise<PositionEdge>,
+    Fragmentable {
+  node: <T = PositionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PositionEdgeSubscription
+  extends Promise<AsyncIterator<PositionEdge>>,
+    Fragmentable {
+  node: <T = PositionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface EmployeePreviousValues {
+  id: ID_Output;
+  user: String;
+  team: String;
+  position: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface EmployeePreviousValuesPromise
+  extends Promise<EmployeePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: () => Promise<String>;
+  team: () => Promise<String>;
+  position: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface EmployeePreviousValuesSubscription
+  extends Promise<AsyncIterator<EmployeePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: () => Promise<AsyncIterator<String>>;
+  team: () => Promise<AsyncIterator<String>>;
+  position: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Employee {
+  id: ID_Output;
+  user: String;
+  team: String;
+  position: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface EmployeePromise extends Promise<Employee>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: () => Promise<String>;
+  team: () => Promise<String>;
+  position: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface EmployeeSubscription
+  extends Promise<AsyncIterator<Employee>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: () => Promise<AsyncIterator<String>>;
+  team: () => Promise<AsyncIterator<String>>;
+  position: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface EmployeeNullablePromise
+  extends Promise<Employee | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: () => Promise<String>;
+  team: () => Promise<String>;
+  position: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface User {
@@ -1164,327 +1744,29 @@ export interface UserNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface Employee {
-  id: ID_Output;
-  user: String;
-  team: String;
-  position: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface EmployeePromise extends Promise<Employee>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: () => Promise<String>;
-  team: () => Promise<String>;
-  position: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface EmployeeSubscription
-  extends Promise<AsyncIterator<Employee>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: () => Promise<AsyncIterator<String>>;
-  team: () => Promise<AsyncIterator<String>>;
-  position: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface EmployeeNullablePromise
-  extends Promise<Employee | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: () => Promise<String>;
-  team: () => Promise<String>;
-  position: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface TeamEdge {
-  node: Team;
-  cursor: String;
-}
-
-export interface TeamEdgePromise extends Promise<TeamEdge>, Fragmentable {
-  node: <T = TeamPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TeamEdgeSubscription
-  extends Promise<AsyncIterator<TeamEdge>>,
-    Fragmentable {
-  node: <T = TeamSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TeamPreviousValues {
-  id: ID_Output;
-  admin: String;
-  name: String;
-  isActive: Boolean;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface TeamPreviousValuesPromise
-  extends Promise<TeamPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  admin: () => Promise<String>;
-  name: () => Promise<String>;
-  isActive: () => Promise<Boolean>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface TeamPreviousValuesSubscription
-  extends Promise<AsyncIterator<TeamPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  admin: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  isActive: () => Promise<AsyncIterator<Boolean>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface Administrator {
-  id: ID_Output;
-  user: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface AdministratorPromise
-  extends Promise<Administrator>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface AdministratorSubscription
-  extends Promise<AsyncIterator<Administrator>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface AdministratorNullablePromise
-  extends Promise<Administrator | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface AdministratorSubscriptionPayload {
+export interface PositionSubscriptionPayload {
   mutation: MutationType;
-  node: Administrator;
+  node: Position;
   updatedFields: String[];
-  previousValues: AdministratorPreviousValues;
+  previousValues: PositionPreviousValues;
 }
 
-export interface AdministratorSubscriptionPayloadPromise
-  extends Promise<AdministratorSubscriptionPayload>,
+export interface PositionSubscriptionPayloadPromise
+  extends Promise<PositionSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = AdministratorPromise>() => T;
+  node: <T = PositionPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = AdministratorPreviousValuesPromise>() => T;
+  previousValues: <T = PositionPreviousValuesPromise>() => T;
 }
 
-export interface AdministratorSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<AdministratorSubscriptionPayload>>,
+export interface PositionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PositionSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = AdministratorSubscription>() => T;
+  node: <T = PositionSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = AdministratorPreviousValuesSubscription>() => T;
-}
-
-export interface AggregatePosition {
-  count: Int;
-}
-
-export interface AggregatePositionPromise
-  extends Promise<AggregatePosition>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePositionSubscription
-  extends Promise<AsyncIterator<AggregatePosition>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AdministratorPreviousValues {
-  id: ID_Output;
-  user: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface AdministratorPreviousValuesPromise
-  extends Promise<AdministratorPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface AdministratorPreviousValuesSubscription
-  extends Promise<AsyncIterator<AdministratorPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface PositionConnection {
-  pageInfo: PageInfo;
-  edges: PositionEdge[];
-}
-
-export interface PositionConnectionPromise
-  extends Promise<PositionConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PositionEdge>>() => T;
-  aggregate: <T = AggregatePositionPromise>() => T;
-}
-
-export interface PositionConnectionSubscription
-  extends Promise<AsyncIterator<PositionConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PositionEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePositionSubscription>() => T;
-}
-
-export interface AggregateAdministrator {
-  count: Int;
-}
-
-export interface AggregateAdministratorPromise
-  extends Promise<AggregateAdministrator>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateAdministratorSubscription
-  extends Promise<AsyncIterator<AggregateAdministrator>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface Position {
-  id: ID_Output;
-  name: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface PositionPromise extends Promise<Position>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface PositionSubscription
-  extends Promise<AsyncIterator<Position>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface PositionNullablePromise
-  extends Promise<Position | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface EmployeeSubscriptionPayload {
-  mutation: MutationType;
-  node: Employee;
-  updatedFields: String[];
-  previousValues: EmployeePreviousValues;
-}
-
-export interface EmployeeSubscriptionPayloadPromise
-  extends Promise<EmployeeSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = EmployeePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = EmployeePreviousValuesPromise>() => T;
-}
-
-export interface EmployeeSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<EmployeeSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = EmployeeSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = EmployeePreviousValuesSubscription>() => T;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
+  previousValues: <T = PositionPreviousValuesSubscription>() => T;
 }
 
 export interface Team {
@@ -1552,29 +1834,29 @@ export interface PositionPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface PositionSubscriptionPayload {
+export interface UserSubscriptionPayload {
   mutation: MutationType;
-  node: Position;
+  node: User;
   updatedFields: String[];
-  previousValues: PositionPreviousValues;
+  previousValues: UserPreviousValues;
 }
 
-export interface PositionSubscriptionPayloadPromise
-  extends Promise<PositionSubscriptionPayload>,
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = PositionPromise>() => T;
+  node: <T = UserPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = PositionPreviousValuesPromise>() => T;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
 }
 
-export interface PositionSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PositionSubscriptionPayload>>,
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PositionSubscription>() => T;
+  node: <T = UserSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PositionPreviousValuesSubscription>() => T;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
 export interface AdministratorEdge {
@@ -1596,53 +1878,114 @@ export interface AdministratorEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface EmployeePreviousValues {
+export interface ReportPreviousValues {
   id: ID_Output;
-  user: String;
-  team: String;
-  position: String;
+  assignedBy: String;
+  assignedTo: String;
+  arrivalTime: Int;
+  departureTime: Int;
+  workingDay: Int;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
 
-export interface EmployeePreviousValuesPromise
-  extends Promise<EmployeePreviousValues>,
+export interface ReportPreviousValuesPromise
+  extends Promise<ReportPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  user: () => Promise<String>;
-  team: () => Promise<String>;
-  position: () => Promise<String>;
+  assignedBy: () => Promise<String>;
+  assignedTo: () => Promise<String>;
+  arrivalTime: () => Promise<Int>;
+  departureTime: () => Promise<Int>;
+  workingDay: () => Promise<Int>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface EmployeePreviousValuesSubscription
-  extends Promise<AsyncIterator<EmployeePreviousValues>>,
+export interface ReportPreviousValuesSubscription
+  extends Promise<AsyncIterator<ReportPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  user: () => Promise<AsyncIterator<String>>;
-  team: () => Promise<AsyncIterator<String>>;
-  position: () => Promise<AsyncIterator<String>>;
+  assignedBy: () => Promise<AsyncIterator<String>>;
+  assignedTo: () => Promise<AsyncIterator<String>>;
+  arrivalTime: () => Promise<AsyncIterator<Int>>;
+  departureTime: () => Promise<AsyncIterator<Int>>;
+  workingDay: () => Promise<AsyncIterator<Int>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface PositionEdge {
-  node: Position;
+export interface ReportSubscriptionPayload {
+  mutation: MutationType;
+  node: Report;
+  updatedFields: String[];
+  previousValues: ReportPreviousValues;
+}
+
+export interface ReportSubscriptionPayloadPromise
+  extends Promise<ReportSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ReportPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ReportPreviousValuesPromise>() => T;
+}
+
+export interface ReportSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ReportSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ReportSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ReportPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateAdministrator {
+  count: Int;
+}
+
+export interface AggregateAdministratorPromise
+  extends Promise<AggregateAdministrator>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateAdministratorSubscription
+  extends Promise<AsyncIterator<AggregateAdministrator>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregatePosition {
+  count: Int;
+}
+
+export interface AggregatePositionPromise
+  extends Promise<AggregatePosition>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePositionSubscription
+  extends Promise<AsyncIterator<AggregatePosition>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ReportEdge {
+  node: Report;
   cursor: String;
 }
 
-export interface PositionEdgePromise
-  extends Promise<PositionEdge>,
-    Fragmentable {
-  node: <T = PositionPromise>() => T;
+export interface ReportEdgePromise extends Promise<ReportEdge>, Fragmentable {
+  node: <T = ReportPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface PositionEdgeSubscription
-  extends Promise<AsyncIterator<PositionEdge>>,
+export interface ReportEdgeSubscription
+  extends Promise<AsyncIterator<ReportEdge>>,
     Fragmentable {
-  node: <T = PositionSubscription>() => T;
+  node: <T = ReportSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -1665,22 +2008,6 @@ export interface TeamConnectionSubscription
   pageInfo: <T = PageInfoSubscription>() => T;
   edges: <T = Promise<AsyncIterator<TeamEdgeSubscription>>>() => T;
   aggregate: <T = AggregateTeamSubscription>() => T;
-}
-
-export interface AggregateTeam {
-  count: Int;
-}
-
-export interface AggregateTeamPromise
-  extends Promise<AggregateTeam>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateTeamSubscription
-  extends Promise<AsyncIterator<AggregateTeam>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PageInfo {
@@ -1706,10 +2033,31 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface PositionConnection {
+  pageInfo: PageInfo;
+  edges: PositionEdge[];
+}
+
+export interface PositionConnectionPromise
+  extends Promise<PositionConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PositionEdge>>() => T;
+  aggregate: <T = AggregatePositionPromise>() => T;
+}
+
+export interface PositionConnectionSubscription
+  extends Promise<AsyncIterator<PositionConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PositionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePositionSubscription>() => T;
+}
+
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
-export type Int = number;
+export type String = string;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -1730,14 +2078,14 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 /**
  * Model Metadata
@@ -1762,6 +2110,10 @@ export const models: Model[] = [
   },
   {
     name: "Employee",
+    embedded: false
+  },
+  {
+    name: "Report",
     embedded: false
   }
 ];

@@ -5,6 +5,7 @@ datamodel:
   - ./src/models/team.prisma
   - ./src/models/position.prisma
   - ./src/models/employee.prisma
+  - ./src/models/report.prisma
 
 generate:
   - generator: javascript-client
